@@ -28,6 +28,7 @@
     * Factory methods to create different implementations
             - `val hashmap = HashMap(1->"one", 2->"two")`
     * immutable by default
+    * `+` or `+=` to add
 
 
 ### Arrays <a id="arrays"></a>
