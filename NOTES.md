@@ -37,22 +37,26 @@
 
 
 ### Arrays <a id="arrays"></a>
-
-    val greetStrings = new Array[String](3)
-    greetStrings(0) = "Hello"
-    greetStrings(1) = ", "
-    greetStrings(2) = "world!\n"
+``` scala
+val greetStrings = new Array[String](3)
+greetStrings(0) = "Hello"
+greetStrings(1) = ", "
+greetStrings(2) = "world!\n"
+```
 
 Explicitly declare the type:
 
-    val greetString: Array[String] = new Array[String](3)
+``` scala
+val greetString: Array[String] = new Array[String](3)
 
-    val numNames = Array("zero", "one", "two")
+val numNames = Array("zero", "one", "two")
+```
 
 What is is actually doing is calling a method call apply on the Array companion object that returns a new array (think static method)
 
-    val numNames2 = Array.apply("zero", "one", "two")
-
+``` scala
+val numNames2 = Array.apply("zero", "one", "two")
+```
 
 ### Lists <a id="lists"></a>
 | Common List Operations                                           | Explanation                          |
@@ -362,7 +366,7 @@ def searchFrom(i: Int): Int =
       else if (args(i).endsWith(".scala")) i
       else searchFrom(i + 1)
 
-    val i = searchFrom(0)
+val i = searchFrom(0)
 ```
 
 ###### the Scala compiler will tail-call optimize this recursive code
