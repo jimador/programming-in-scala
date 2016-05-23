@@ -142,28 +142,30 @@ for (line <- lines) {
 ## Classes and Objects <a id="classes"></a>
 
 ``` scala
-    class ChecksumAccumulator {
-        var sum = 0
-        //stuff
-    }
+class ChecksumAccumulator {
+    var sum = 0
+    //stuff
+}
 ```
 
-create an instance with `new`
+create an instance with `new` keyword
 
 ``` scala
 val acc = new ChecksumAccumulator
 ```
 
-you can access the `sum` field with the `.`
+you can access the `sum` field with the `.` operator
 
 `acc.sum`
 
 like Java, there are access modifiers
 
-    public
-    private
-    protected
-    default
+``` scala
+public
+private
+protected
+default
+```
 
 ### Methods <a id="methods"></a>
 ##### method parameters are vals not vars
