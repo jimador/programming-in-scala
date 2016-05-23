@@ -20,7 +20,7 @@
     * `val pair = (99, "Luft Ballons")`
     * immutable
     * can contain different types
-    * access elements w/ ._1, ._2, ... ._N (one indexed)
+    * access elements w/ `._1`, `._2`, ... `._N` (one indexed)
   * [Sets](#sets)
     * `val set = Set(1,2,3)`
     * Mutable and Immutable versions `scala.collection.immutable` and `scala.collection.mutable`
@@ -31,7 +31,7 @@
     * `val map = Map(1->"one", 2->"two")`
     * Mutable and Immutable versions `scala.collection.immutable` and `scala.collection.mutable`
     * Factory methods to create different implementations
-            - `val hashmap = HashMap(1->"one", 2->"two")`
+      * `val hashmap = HashMap(1->"one", 2->"two")`
     * immutable by default
     * `+` or `+=` to add
 
@@ -61,30 +61,30 @@ val numNames2 = Array.apply("zero", "one", "two")
 ### Lists <a id="lists"></a>
 | Common List Operations                                           | Explanation                          |
 | -----------------------------------------------------------------| ------------------------------------ |
-| List() or Nil	                                                   | The empty List
-| List("Cool", "tools", "rule")                                    | new List |
-| ::	                                                           | Cons operator |
-| :::	                                                           | Cons 2 lists |
-| aList(2)	                                                       | element at index 2 (zero based) |
-| count(s => s.length == 4)                                        | Counts the number of string elements in length 4 |
-| drop(2)	                                                       | Returns the list without its first 2 elements |
-| dropRight(2)	                                                   | Returns the list without its rightmost 2 elements |
-| exists(s => s == "until")	                                       | Determines whether a string element exists in that has the value "until" returns Boolean |
-| filter(s => s.length == 4)	                                   | Returns a list of all elements, in order,  that have length 4 |
-| forall(s => s.endsWith("l"))           	                       | Indicates whether all elements in the thrill list end with the letter "l" (returns true) |
-| foreach(s => print(s))	                                       | Executes the print statement on each of the strings in the list |
-| foreach(print)	                                               | Same as the previous |
-| head	                                                           | Returns the first element in the list |
-| init	                                                           | Returns a list of all but the last element in the list |
-| isEmpty	                                                       | Indicates whether the list is empty, Boolean |
-| last	                                                           | Returns the last element in the thrill list |
-| length	                                                       | Returns the number of elements in the list |
-| map(s => s + "y")	                                               | Returns a list resulting from adding a "y" to each string element in the list |
-| mkString(", ")	                                               | Makes a string with the elements of the list |
-| remove(s => s.length == 4)	                                   | Returns a list of all elements, in order, of the list except those that have length 4 |
-| reverse	                                                       | Returns a list containing all elements of the list in reverse order |
-| sort((s, t) => s.charAt(0).toLowerCase < t.charAt(0).toLowerCase)| Returns a list containing all elements of the thrill list in alphabetical order of the first character lowercased |
-| tail	                                                           | Returns the list minus its first element |
+| `List()` or `Nil`	                                                   | The empty List
+| `List("Cool", "tools", "rule")`                                    | new List |
+| `::`	                                                           | Cons operator |
+| `:::`	                                                           | Cons 2 lists |
+| `aList(2)`	                                                       | element at index 2 (zero based) |
+| `count(s => s.length == 4)`                                        | Counts the number of string elements in length 4 |
+| `drop(2)`	                                                       | Returns the list without its first 2 elements |
+| `dropRight(2)`	                                                   | Returns the list without its rightmost 2 elements |
+| `exists(s => s == "until")`                                       | Determines whether a string element exists in that has the value "until" returns Boolean |
+| `filter(s => s.length == 4)`	                                   | Returns a list of all elements, in order,  that have length 4 |
+| `forall(s => s.endsWith("l"))`           	                       | Indicates whether all elements in the thrill list end with the letter "l" (returns true) |
+| `foreach(s => print(s))`	                                       | Executes the print statement on each of the strings in the list |
+| `foreach(print)`	                                               | Same as the previous |
+| `head`	                                                           | Returns the first element in the list |
+| `init`	                                                           | Returns a list of all but the last element in the list |
+| `isEmpty`	                                                       | Indicates whether the list is empty, Boolean |
+| `last`	                                                           | Returns the last element in the thrill list |
+| `length`	                                                       | Returns the number of elements in the list |
+| `map(s => s + "y")`	                                               | Returns a list resulting from adding a "y" to each string element in the list |
+| `mkString(", ")`	                                               | Makes a string with the elements of the list |
+| `remove(s => s.length == 4)`	                                   | Returns a list of all elements, in order, of the list except those that have length 4 |
+| `reverse`	                                                       | Returns a list containing all elements of the list in reverse order |
+| `sort((s, t) => s.charAt(0).toLowerCase < t.charAt(0).toLowerCase)` | Returns a list containing all elements of the thrill list in alphabetical order of the first character lowercased |
+| `tail`	                                                           | Returns the list minus its first element |
 
 
 ### Tuples <a id="tuples"></a>
@@ -99,10 +99,12 @@ likely be sufficient for most situations, occasionally you may want an explicit 
 similar. Simply import that class you need, and use the factory method on its companion object. For example, if you
 need an immutable HashSet, you could do this:
 
-    import scala.collection.immutable.HashSet
+``` scala
+import scala.collection.immutable.HashSet
 
-    val hashSet = HashSet("Tomatoes", "Chilies")
-    println(hashSet + "Coriander")
+val hashSet = HashSet("Tomatoes", "Chilies")
+println(hashSet + "Coriander")
+```
 
 ### Maps <a id="maps"></a>
 
@@ -344,17 +346,17 @@ firstArg match {
 *Java code*
 ``` java
 int i = 0;                // This is Java
-  boolean foundIt = false;
-  while (i < args.length) {
-    if (args[i].startsWith("-")) {
-      i = i + 1;
-      continue;
-    }
-    if (args[i].endsWith(".scala")) {
-      foundIt = true;
-      break;
-    }
+boolean foundIt = false;
+while (i < args.length) {
+  if (args[i].startsWith("-")) {
     i = i + 1;
+    continue;
+  }
+  if (args[i].endsWith(".scala")) {
+    foundIt = true;
+    break;
+  }
+  i = i + 1;
 }
 ```
 
