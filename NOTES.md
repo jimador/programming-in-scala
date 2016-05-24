@@ -10,6 +10,7 @@
 6. [Exceptions](#exceptions)
 7. [Match Expressions](#match-exp)
 8. [Functions and Closures](#func-and-closures)
+9. [Control Abstraction](#control-abstraction)
 
 ## Collections <a id="collections"></a>
   * [Arrays](#arrays") - Mutable sequence of objects that are all the same type
