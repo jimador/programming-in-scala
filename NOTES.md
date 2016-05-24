@@ -50,15 +50,19 @@ greetStrings(2) = "world!\n"
 Explicitly declare the type:
 
 ``` scala
+
 val greetString: Array[String] = new Array[String](3)
 
 val numNames = Array("zero", "one", "two")
+
 ```
 
 What is is actually doing is calling a method call apply on the Array companion object that returns a new array (think static method)
 
 ``` scala
+
 val numNames2 = Array.apply("zero", "one", "two")
+
 ```
 
 ### Lists <a id="lists"></a>
@@ -103,21 +107,25 @@ similar. Simply import that class you need, and use the factory method on its co
 need an immutable HashSet, you could do this:
 
 ``` scala
+
 import scala.collection.immutable.HashSet
 
 val hashSet = HashSet("Tomatoes", "Chilies")
 println(hashSet + "Coriander")
+
 ```
 
 ### Maps <a id="maps"></a>
 
 ``` scala
+
 import scala.collection.mutable.Map
 
 val treasureMap = Map[Int, String]()
 treasureMap += (1 -> "Go to island.")
 treasureMap += (2 -> "Find big X on ground.")
 treasureMap += (3 -> "Dig.")
+
 ```
 
 ## Functional Style <a id="fp"></a>
@@ -125,6 +133,7 @@ treasureMap += (3 -> "Dig.")
 ### File reading example
 
 ```scala
+
 import scala.io.Source
 
 val lines = Source.fromFile(args(0)).getLines.toList
@@ -140,21 +149,26 @@ for (line <- lines) {
     val padding = " " * numSpaces
     print(padding + line.length +" | "+ line)
 }
+
 ```
 
 ## Classes and Objects <a id="classes"></a>
 
 ``` scala
+
 class ChecksumAccumulator {
     var sum = 0
     //stuff
 }
+
 ```
 
 create an instance with `new` keyword
 
 ``` scala
+
 val acc = new ChecksumAccumulator
+
 ```
 
 you can access the `sum` field with the `.` operator
@@ -164,15 +178,18 @@ you can access the `sum` field with the `.` operator
 like Java, there are access modifiers
 
 ``` scala
+
 //public <= this is the default access modifier
 private
 protected
 //default <= this one I don't really know about for Scala.
+
 ```
 
 ### Methods <a id="methods"></a>
 ##### method parameters are vals not vars
 ``` scala
+
 class ChecksumAccumulator {
     private var sum = 0
 
@@ -184,16 +201,19 @@ class ChecksumAccumulator {
       return ~(sum & 0xFF) + 1
     }
 }
+
 ```
 
 #####  Because all checksum does is calculate a value, it does not need an explicit return.
 
 ``` scala
+
 class ChecksumAccumulator {
   private var sum = 0
   def add(b: Byte): Unit = sum += b
   def checksum(): Int = ~(sum & 0xFF) + 1
 }
+
 ```
 
 ##### One puzzler to watch out for is that whenever you leave off the equals sign before the body of a function, its result type will definitely be Unit.
@@ -211,6 +231,7 @@ class ChecksumAccumulator {
 ##### classes in Scala cannot have static members. Instead, Scala has singleton objects. A singleton object definition looks like a class definition, except instead of the keyword class you use the keyword `object`.
 
 ``` scala
+
  import scala.collection.mutable.Map
 
  object ChecksumAccumulator {
@@ -229,6 +250,7 @@ class ChecksumAccumulator {
        cs
      }
  }
+ 
 ```
 
 The singleton object in this figure is named ChecksumAccumulator, the same name as the class in the previous example. When a singleton object shares the same name with a class, it is called that class's companion object. You must define both the class and its companion object in the same source file. The class is called the companion class of the singleton object. A class and its companion object can access each other's private members.
@@ -238,6 +260,7 @@ One way to think of singleton objects is as the home for any static methods you 
 ## Operator Overloading <a id="op-overloading"></a>
 ##### Yes, you can overload operators. Only do it where it would make sense to do it.
 ``` scala
+
 class Rational(n: Int, d: Int) {
 
   require(d != 0)
@@ -262,6 +285,7 @@ class Rational(n: Int, d: Int) {
   private def gcd(a: Int, b: Int): Int =
     if (b == 0) a else gcd(b, a % b)
 }
+
 ```
 
 ## Control Structures <a id="control-structures"></a>
@@ -277,6 +301,7 @@ class Rational(n: Int, d: Int) {
 | `yield`                    | produce a value to remember each iteration |
 
 ``` scala
+
 // example of yield
 def scalaFiles =
   for {
@@ -293,6 +318,7 @@ val forLineLengths =
     trimmed = line.trim
     if trimmed.matches(".*for.*")
   } yield trimmed.length
+  
 ```
 
 ## Exceptions <a id="exceptions"></a>
@@ -306,6 +332,7 @@ val forLineLengths =
 * has `finally` clause
 
 ``` scala
+
 import java.io.FileReader
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -317,11 +344,13 @@ try {
   case ex: FileNotFoundException => // Handle missing file
   case ex: IOException => // Handle other I/O error
 }
+
 ```
 
 you can yield a value from a catch
 
 ``` scala
+
 import java.net.URL
 import java.net.MalformedURLException
 
@@ -332,6 +361,7 @@ def urlFor(path: String) =
     case e: MalformedURLException =>
       new URL("http://www.scala-lang.org")
   }
+  
 ```
 
 ## Match Expressions <a id="match-exp"></a>
@@ -350,6 +380,7 @@ firstArg match {
 
 *Java code*
 ``` java
+
 int i = 0;                // This is Java
 boolean foundIt = false;
 while (i < args.length) {
@@ -363,10 +394,12 @@ while (i < args.length) {
   }
   i = i + 1;
 }
+
 ```
 
 *Scala w/ recursion*
 ``` scala
+
 def searchFrom(i: Int): Int =
       if (i >= args.length) -1
       else if (args(i).startsWith("-")) searchFrom(i + 1)
@@ -374,6 +407,7 @@ def searchFrom(i: Int): Int =
       else searchFrom(i + 1)
 
 val i = searchFrom(0)
+
 ```
 
 ###### the Scala compiler will tail-call optimize this recursive code
@@ -390,6 +424,7 @@ val i = searchFrom(0)
 ### Local functions <a id="local-func"></a>
 Better than private methods in Java
 ``` scala
+
 def processFile(filename: String, width: Int) {
 
   def processLine(filename: String,
@@ -404,10 +439,12 @@ def processFile(filename: String, width: Int) {
     processLine(filename, width, line)
   }
 }
+
 ```
 Here, `processLine` is scoped to inside `processFile` and no one else can access it. But we can do better. Since `width` and `fileName` are scoped to `processFile` we don't need to pass those in. A child def has access to it's parent's scope.
 
 ``` scala
+
 import scala.io.Source
 
 object LongLines {
@@ -424,6 +461,7 @@ object LongLines {
       processLine(line)
   }
 }
+
 ```
 
 ### First-class functions <a id="first-class-func"></a>
@@ -431,18 +469,22 @@ Scala has first-class functions. A function literal is compiled into a class tha
 are objects at runtime. Example literal:
 
 ``` scala
+
 (x: Int) => x + 1
+
 ```
 
 The `=>` designates that this function converts the thing on the left (any integer x) to the thing on the right (x + 1). So, this is a function mapping any integer x to x + 1.
 For multi-line functions surround with `{ }`
 ``` scala
+
 increase = (x: Int) => {
    println("We")
    println("are")
    println("here!")
    x + 1
 }
+
 ```
 
 ### Placeholder syntax `_` <a id="placeholder"> </a>
@@ -452,19 +494,25 @@ To make a function literal even more concise, you can use underscores as placeho
 
 Sometimes the compiler doesn't have enough information to infer syntax. Consider `_ + _`. Instead we can say
 ``` scala
+
 val f = (_: Int) + (_:Int)
+
 ```
 
 You can also replace an entire parameter list with an `_`
 
 ``` scala
+
 someNumbers.foreach(println _)
+
 ```
 *when you use an `_` like this you are writing a partially applied function*
 Consider:
 
 ``` scala
+
 def sum(a: Int, b: Int, c: Int) = a + b + c
+
 ```
 results in `sum: (Int,Int,Int)Int`
 
@@ -487,11 +535,13 @@ If you are writing a partially applied function expression in which you leave of
 
 So far we've only looked at function literals that refer to passed in parameters. You can also refer to variables defined elsewhere.
 ``` scala
+
 var more = 1
 // ... a little ways does the source
 val addMore = (x: Int) => x + more
 // results in `addMore: (Int) => Int = <function>`
 addMore(10)
+
 ```
 
 The function value (the object) that's created at runtime from this function literal is called a closure. The name arises from the act of "closing" the function literal by "capturing" the bindings of its free variables. A function literal with no free variables, such as `(x: Int) => x + 1`, is called a closed term, where a term is a bit of source code. Thus a function value created at runtime from this function literal is not a closure in the strictest sense, because `(x: Int) => x + 1` is already closed as written. But any function literal with free variables, such as `(x: Int) => x + more`, is an open term. Therefore, any function value created at runtime from `(x: Int) => x + more` will by definition require that a binding for its free variable, more, be captured. The resulting function value, which will contain a reference to the captured more variable, is called a closure, therefore, because the function value is the end product of the act of closing the open term, `(x: Int) => x + more`.
@@ -501,6 +551,7 @@ What if a closure accesses some variable that has several different copies as th
 
 Each time this function is called it will create a new closure. Each closure will access the more variable that was active when the closure was created.
 ``` scala
+
 def makeIncreaser(more: Int) = (x: Int) => x + more
 
 val inc1 = makeIncreaser(1)
@@ -514,11 +565,13 @@ inc1(10)
 
 inc9999(10)
 // result Int = 10009
+
 ```
 
 ### Repeated parameters <a id="repeated-params"></a>
 
 ``` scala
+
 def echo(args: String*) = for (arg <- args) println(arg)
 // echo: (String*)Unit
 
@@ -538,15 +591,18 @@ echo(arr)
 // found   : Array[java.lang.String]
 // required: String
 //      echo(arr)
+
 ```
 
 To accomplish this, you'll need to append the array argument with a colon and an `_*` symbol, like this
 
 ``` scala
+
 echo(arr: _*)
 // What's
 // up
 // doc?
+
 ```
 
 ### Tail recursion <a id="tail-rec"> </a><a id="rec-tail"></a>
@@ -554,6 +610,7 @@ echo(arr: _*)
 A tail of 2 functions:
 
 ``` scala
+
 //recursive
 def approximate(guess: Double): Double =
     if (isGoodEnough(guess)) guess
@@ -561,46 +618,55 @@ def approximate(guess: Double): Double =
 
 //iterative
 def approximateLoop(initialGuess: Double): Double = {
-    var guess = initialGuess
-    while (!isGoodEnough(guess))
-      guess = improve(guess)
-    guess
-  }
+      var guess = initialGuess
+      while (!isGoodEnough(guess))
+        guess = improve(guess)
+      guess
+    }
+  
 ```
 You might think that the iterative approach would be faster, but actually, they both incur the same overhead. The Scala compiler is able to transform the
 recursive call into an iterative one using *tail-call optimization*. If the recursive call is not in the tail poisition, the compiler can not optimize it.
 
 ``` scala
+
 // Blowin' up da stack
 def boom(x: Int): Int =
    if (x == 0) throw new Exception("boom!")
    else boom(x - 1) + 1
+   
 ```
 
 **This function is NOT tail recursive because it performs an increment AFTER the call**
 
 ``` scala
+
 def bang(x: Int): Int =
     if (x == 0) throw new Exception("bang!")
     else bang(x - 1)
+    
 ```
 
 **now it is**
 Scala only optimizes directly recursive calls back to the same function making the call. If the recursion is indirect, as in the following example of two mutually recursive functions, no optimization is possible:
 
 ``` scala
+
 def isEven(x: Int): Boolean =
     if (x == 0) true else isOdd(x - 1)
 def isOdd(x: Int): Boolean =
   if (x == 0) false else isEven(x - 1)
+  
 ```
 You also won't get a tail-call optimization if the final call goes to a function value. Consider for instance the following recursive code:
 
 ``` scala
+
 val funValue = nestedFun _
 def nestedFun(x: Int) {
   if (x != 0) { println(x); funValue(x - 1) }
 }
+
 ```
 The funValue variable refers to a function value that essentially wraps a call to nestedFun. When you apply the function value to an argument, it turns around and applies nestedFun to that same argument, and returns the result. You might hope, therefore, the Scala compiler would perform a tail-call optimization, but in this case it would not. Thus, tail-call optimization is limited to situations in which a method or nested function calls itself directly as its last operation, without going through a function value or some other intermediary.
 
@@ -616,6 +682,7 @@ If you still don't get it, see this awesome writeup  [Tail recursion](#rec-tail)
 Functions can be thought of as having 2 different parts, common and uncommon. Common parts are those parts that do not change from one invocation to the next. Noncommon are their dual (those that change). e.g. common parts - function body, noncommon - function args. In Scala, we can easily define functions that take other functions as arguments (*Higher-Order Functions*). These higher-order functions let us create new control abstractions that can reduce code duplication. below we're working on a file browser that provides an API for users to search for files matching some criterion.
 
 ``` scala
+
 object FileMatcher {
   private def filesHere = (new java.io.File(".")).listFiles
 
@@ -624,24 +691,29 @@ object FileMatcher {
     for (file <- filesHere; if file.getName.endsWith(query))
       yield file
 }
+
 ```
 
 Looks good. Users can search for files that end with what they want. But later...
 
 ``` scala
+
 //files who's name has some String we're interested in
 def filesContaining(query: String) =
   for (file <- filesHere; if file.getName.contains(query))
     yield file
+    
 ```
 
 Still looking good. But later, we want something else
 
 ``` scala
+
 //files by some regex
 def filesRegex(query: String) =
   for (file <- filesHere; if file.getName.matches(query))
     yield file
+    
 ```
 
 There's a lot of duplication of logic going on here. Function values to the rescue
@@ -672,6 +744,7 @@ def filesRegex(query: String) =
 That's all nice, but notice that query gets passed to `filesMatching`, but `fileMatching` does nothing with the query except hand it off to the passed matcher function. The passing is unnecessary, b/c the caller knew the query to begin with. Let's factor out the query param from `filesMatching` and `matcher`.
 
 ``` scala
+
 object FileMatcher {
   private def filesHere = (new java.io.File(".")).listFiles
 
@@ -688,6 +761,7 @@ object FileMatcher {
   def filesRegex(query: String) =
     filesMatching(_.matches(query))
 }
+
 ```
 
 **Simplify client code by by placing higher-order functions in your API**
@@ -705,6 +779,7 @@ Here, the `exists` method is a control abstraction that is on `List`. It is a sp
 We've touched on this previously, but currying helps us make control structures that feel more like native language support. Let's look at some examples.
 
 ``` scala
+
 //I think we can see what this does
 def plainSum(x: Int, y: Int) = x + y
 
@@ -712,11 +787,13 @@ def plainSum(x: Int, y: Int) = x + y
 def curriedSum(x: Int)(y: Int) = x + y
 
 //curriedSum(1)(2) => 3
+
 ```
 
 What you're getting with `curriedSum` is actually *two* traditional function invocations back to back. The first function takes an `Int` value named `x`, and returns a function value for the second function. The second takes an `Int` param `y`.  Below you can see something we Java folks might find a little more familiar:
 
 ``` scala
+
 def first(x: Int) = (y: Int) => x + y
 //first: (Int)(Int) => Int
 
@@ -730,7 +807,9 @@ second(2)
 These `first` and `second` just illustrate the process. They are not directly connected to the `curriedSum` function. We can get a reference to the `curriedSum`'s second arg by saying
 
 ``` scala
+
 val plusOne = curriedSum(1)_
+
 ```
 
 **Writing new control structures - easy as methods that take functions as args**
@@ -739,6 +818,7 @@ val plusOne = curriedSum(1)_
 Consider the common pattern of: *open a resources, operate on it, and then close it* You can capture this logic in a control structure.
 
 ``` scala
+
 def withPrintWriter(file: File, op: PrintWriter => Unit) {
   val writer = new PrintWriter(file)
   try {
@@ -753,12 +833,14 @@ myCoolThing.withPrintWriter(
   new File("data.txt")
   writer => writer.println(new java.util.Date)
 )
+
 ```
 The cool thing here is that 'withPrintWriter' ensures that the resource is closed at the end! This technique is called the **loan pattern**, because a control-abstraction function, such as `withPrintWriter`, opens a resource and "loans" it to a function. For instance, `withPrintWriter` in the previous example loans a `PrintWriter` to the function, op. When the function completes, it signals that it no longer needs the "borrowed" resource. The resource is then closed in a finally block, to ensure it is indeed closed, regardless of whether the function completes by returning normally or throwing an exception.
 
 To make it look nicer, Scala lets you wrap you args in `{ }` instead of `( )` for passing in **ONE** arg. Sadly our `withPrintWriter` method takes 2. But, does it have to? Let's revisit currying...
 
 ``` scala
+
 def withPrintWriter(file: File)(op: PrintWriter => Unit) {
   val writer = new PrintWriter(file)
   try {
@@ -767,15 +849,18 @@ def withPrintWriter(file: File)(op: PrintWriter => Unit) {
     writer.close()
   }
 }
+
 ```
 Take the withPrintWriter method defined previously as an example. In its most recent form, withPrintWriter takes two arguments, so you can't use curly braces. Nevertheless, because the function passed to withPrintWriter is the last argument in the list, you can use currying to pull the first argument, the File, into a separate argument list. Now we can say:
 
 ``` scala
+
 val file = new File("date.txt")
 
 withPrintWriter(file) {
   writer => writer.prinln(new java.util.Date)
 }
+
 ```
 
 *the first argument list, which contains one `File` argument, is written surrounded by parentheses. The second argument list, which contains one function argument, is surrounded by curly braces.*
@@ -783,6 +868,7 @@ withPrintWriter(file) {
 That's awesome, but what if you want to implement something more like if or while, however, where there is no value to pass into the code between the curly braces? To help with such situations, Scala provides **by-name** parameters.
 
 ``` scala
+
 var assertionsEnabled = true
 
 def myAssert(predicate: () => Boolean) =
@@ -819,5 +905,102 @@ boolAssert(x / 0 == 0)
 
 byNameAssert(x / 0 == 0)
 //doesn't yield an error b/c the inner predicate is never eval'd, assertionsEnabled is false!
+
 ```
 ## Composition and Inheritance <a id="comp-and-inher"></a>
+*Making a 2D layout library*
+
+What we'll be working towards here is something like:
+
+``` scala
+
+val column1 = elem("hello") above elem("***")
+val column2 = elem("***") above elem("world")
+column1 beside column2
+
+//hello ***  
+// *** world
+
+```
+
+
+#### Source available [here][ch10Source]
+
+[ch10Source]: https://github.com/jimador/programming-in-scala/tree/master/src/main/scala/programming/in/scala/ch10
+
+
+#### Abstract Classes
+
+``` scala
+abstract class
+```
+just like a Java `abstract class`, can have unimplemented (abstract) methods, and can not be instantiated.
+
+``` scala
+
+abstract class Element {
+  def contents: Array[String]
+  def height: Int = contents.length
+  def width: Int = if (height == 0) 0 else contents(0).length
+}
+
+```
+
+#### Parameterless methods
+*parameterless methods* - methods like `height` are called *parameterless methods*, because they take no args. This is common in Scala. 
+Methods defined with an empty `()` are called *empty-paren methods*. (`height()`) The recommended convention is:  
+
+**use a parameterless method whenever there are no parameters AND the method accesses mutable state ONLY by reading fields
+of the containing object (DOES NOT CHANGE MUTABLE STATE).**
+
+This convention supports the _**Uniform Access Principle (UAP)**_, which says *which says that client code should not be affected 
+by a decision to implement an attribute as a field or method*
+
+That seems a little convoluted to me, so let's look at an example. The *UAP* says that the client shouldn't care where the
+values come from, so let's change our `height` and `width` to `val`
+
+``` scala
+
+abstract class Element {
+  def contents: Array[String]
+  val height: Int = contents.length
+  val width: Int = if (height == 0) 0 else contents(0).length
+}
+
+```
+
+The two definitions of `Element` should be functionally identical, and indeed they are. The only differences could be that 
+accessing the fields as a `val` should be faster because they are precomputed when the `class` is initialized. But, they 
+will require extra memory to store those `val`'s instead of lazily loading them on the fly. 
+
+**Note: ** *Java does not implement the uniform access principle. So Java declares string.length(), not string.length 
+and array.length, not array.length()).*
+
+**The main point is the client SHOULD NOT CARE if the implementation changes**
+
+Scala is very liberal when it comes to mixing parameterless and empty-paren methods. In particular, you can override a 
+parameterless method with an empty-paren method, and vice versa. You can also leave off the empty parentheses on an 
+invocation of any function that takes no arguments. e.x.
+
+``` scala 
+
+Array(1, 2, 3).toString
+"abc".length
+  
+```
+
+#### Extending classes
+
+Just like Java:
+
+``` scala
+
+class ArrayElement(conts: Array[String]) extends Element {
+      def contents: Array[String] = conts
+    }
+
+```
+
+A caveat: *If you leave out an extends clause, the Scala compiler implicitly assumes your class extends from `scala.AnyRef`, 
+which on the Java platform is the same as class `java.lang.Object`. Thus, class `Element` **implicitly** extends class `AnyRef`.*
+
