@@ -547,7 +547,7 @@ echo(arr: _*)
 // doc?
 ```
 
-### Tail recursion <a id="tail-rec"></a>
+### Tail recursion <a id="tail-rec"> </a><a id="rec-tail"></a>
 
 A tail of 2 functions:
 
@@ -602,4 +602,180 @@ def nestedFun(x: Int) {
 ```
 The funValue variable refers to a function value that essentially wraps a call to nestedFun. When you apply the function value to an argument, it turns around and applies nestedFun to that same argument, and returns the result. You might hope, therefore, the Scala compiler would perform a tail-call optimization, but in this case it would not. Thus, tail-call optimization is limited to situations in which a method or nested function calls itself directly as its last operation, without going through a function value or some other intermediary.
 
-If you still don't get it, see this awesome writeup  [Tail recursion](#tail-rec)
+If you still don't get it, see this awesome writeup  [Tail recursion](#rec-tail)
+
+## Control Abstraction <a id="control-abstraction"></a>
+
+* [Currying](#currying)
+
+*How to apply function values to create new control abstractions*
+
+**Reducing code duplication through first class functions**
+Functions can be thought of as having 2 different parts, common and uncommon. Common parts are those parts that do not change from one invocation to the next. Noncommon are their dual (those that change). e.g. common parts - function body, noncommon - function args. In Scala, we can easily define functions that take other functions as arguments (*Higher-Order Functions*). These higher-order functions let us create new control abstractions that can reduce code duplication. below we're working on a file browser that provides an API for users to search for files matching some criterion.
+
+``` scala
+object FileMatcher {
+  private def filesHere = (new java.io.File(".")).listFiles
+
+  //looking for files that end with some String
+  def filesEnding(query: String) =
+    for (file <- filesHere; if file.getName.endsWith(query))
+      yield file
+}
+```
+
+Looks good. Users can search for files that end with what they want. But later...
+
+``` scala
+//files who's name has some String we're interested in
+def filesContaining(query: String) =
+  for (file <- filesHere; if file.getName.contains(query))
+    yield file
+```
+
+Still looking good. But later, we want something else
+
+``` scala
+//files by some regex
+def filesRegex(query: String) =
+  for (file <- filesHere; if file.getName.matches(query))
+    yield file
+```
+
+There's a lot of duplication of logic going on here. Function values to the rescue
+
+``` scala
+def filesMatching(query: String,
+    matcher: (String, String) => Boolean) = {
+
+  for (file <- filesHere; if matcher(file.getName, query))
+    yield file
+}
+```
+
+Now we can just say:
+
+``` scala
+
+def filesEnding(query: String) =
+  filesMatching(query, _.endsWith(_))
+
+def filesContaining(query: String) =
+  filesMatching(query, _.contains(_))
+
+def filesRegex(query: String) =
+  filesMatching(query, _.matches (_))
+
+```
+That's all nice, but notice that query gets passed to `filesMatching`, but `fileMatching` does nothing with the query except hand it off to the passed matcher function. The passing is unnecessary, b/c the caller knew the query to begin with. Let's factor out the query param from `filesMatching` and `matcher`.
+
+``` scala
+object FileMatcher {
+  private def filesHere = (new java.io.File(".")).listFiles
+
+  private def filesMatching(matcher: String => Boolean) =
+    for (file <- filesHere; if matcher(file.getName))
+      yield file
+
+  def filesEnding(query: String) =
+    filesMatching(_.endsWith(query))
+
+  def filesContaining(query: String) =
+    filesMatching(_.contains(query))
+
+  def filesRegex(query: String) =
+    filesMatching(_.matches(query))
+}
+```
+
+**Simplify client code by by placing higher-order functions in your API**
+
+``` scala
+
+def containsNeg(nums: List[Int]): = nums.exists(_ <  0)
+
+```
+
+Here, the `exists` method is a control abstraction that is on `List`. It is a special purpose looping construct provided by the Scala library rather than being built into the language like while or for.
+
+### Currying <a id="currying"></a>
+
+We've touched on this previously, but currying helps us make control structures that feel more like native language support. Let's look at some examples.
+
+``` scala
+//I think we can see what this does
+def plainSum(x: Int, y: Int) = x + y
+
+//The same thing, but curried
+def curriedSum(x: Int)(y: Int) = x + y
+
+//curriedSum(1)(2) => 3
+```
+
+What you're getting with `curriedSum` is actually *two* traditional function invocations back to back. The first function takes an `Int` value named `x`, and returns a function value for the second function. The second takes an `Int` param `y`.  Below you can see something we Java folks might find a little more familiar:
+
+``` scala
+def first(x: Int) = (y: Int) => x + y
+//first: (Int)(Int) => Int
+
+val second = first(1)
+//second: (Int) => Int = <function>
+
+second(2)
+//Int = 3
+
+```
+These `first` and `second` just illustrate the process. They are not directly connected to the `curriedSum` function. We can get a reference to the `curriedSum`'s second arg by saying
+
+``` scala
+val plusOne = curriedSum(1)_
+```
+
+**Writing new control structures - easy as methods that take functions as args**
+*Any time you find a control pattern repeating in your code, you should think about implementing it as a new control structure*
+
+Consider the common pattern of: *open a resources, operate on it, and then close it* You can capture this logic in a control structure.
+
+``` scala
+def withPrintWriter(file: File, op: PrintWriter => Unit) {
+  val writer = new PrintWriter(file)
+  try {
+    op(writer)
+  } finally {
+    writer.close()
+  }
+}
+
+//then later you want to use it...
+myCoolThing.withPrintWriter(
+  new File("data.txt")
+  writer => writer.println(new java.util.Date)
+)
+```
+The cool thing here is that 'withPrintWriter' ensures that the resource is closed at the end! This technique is called the **loan pattern**, because a control-abstraction function, such as `withPrintWriter`, opens a resource and "loans" it to a function. For instance, `withPrintWriter` in the previous example loans a `PrintWriter` to the function, op. When the function completes, it signals that it no longer needs the "borrowed" resource. The resource is then closed in a finally block, to ensure it is indeed closed, regardless of whether the function completes by returning normally or throwing an exception.
+
+To make it look nicer, Scala lets you wrap you args in `{ }` instead of `( )` for passing in **ONE** arg. Sadly our `withPrintWriter` method takes 2. But, does it have to? Let's revisit currying...
+
+``` scala
+def withPrintWriter(file: File)(op: PrintWriter => Unit) {
+  val writer = new PrintWriter(file)
+  try {
+    op(writer)
+  } finally {
+    writer.close()
+  }
+}
+```
+Take the withPrintWriter method defined previously as an example. In its most recent form, withPrintWriter takes two arguments, so you can't use curly braces. Nevertheless, because the function passed to withPrintWriter is the last argument in the list, you can use currying to pull the first argument, the File, into a separate argument list. Now we can say:
+
+``` scala
+val file = new File("date.txt")
+
+withPrintWriter(file) {
+  writer => writer.prinln(new java.util.Date)
+}
+```
+
+*the first argument list, which contains one `File` argument, is written surrounded by parentheses. The second argument list, which contains one function argument, is surrounded by curly braces.*
+
+That's awesome, but what if you want to implement something more like if or while, however, where there is no value to pass into the code between the curly braces? To help with such situations, Scala provides by-name parameters.
