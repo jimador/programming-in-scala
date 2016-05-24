@@ -778,4 +778,43 @@ withPrintWriter(file) {
 
 *the first argument list, which contains one `File` argument, is written surrounded by parentheses. The second argument list, which contains one function argument, is surrounded by curly braces.*
 
-That's awesome, but what if you want to implement something more like if or while, however, where there is no value to pass into the code between the curly braces? To help with such situations, Scala provides by-name parameters.
+That's awesome, but what if you want to implement something more like if or while, however, where there is no value to pass into the code between the curly braces? To help with such situations, Scala provides **by-name** parameters.
+
+``` scala
+var assertionsEnabled = true
+
+def myAssert(predicate: () => Boolean) =
+  if (assertionsEnabled && !predicate())
+    throw new AssertionError
+
+//you can use it by calling...
+myAssert( () => 5 > 3)
+
+//but that's weird, let's change it up
+
+def  byNameAssert(predicate: => Boolean) =
+  if(assertionsEnabled && ! predicate)
+    throw new AssertionError
+
+//much better, now we can just say
+byNameAssert( 5  > 3)
+
+//you could also define
+def boolAssert(predicate: Boolean) =
+  if(assertionsEnabled && ! predicate)
+    throw new AssertionError
+//but this is less than ideal b/c the expression `5 > 3` will be eval'd before the call to boolAssert
+//you can see it here:
+
+var assertionsEnabled = false
+
+boolAssert(x / 0 == 0)
+// => java.lang.ArithmeticException: / by zero
+//           at .<init>(<console>:8)
+//          at .<clinit>(<console>)
+//          at RequestResult$.<init>(<console>:3)
+//          at RequestResult$.<clinit>(<console>)...
+
+byNameAssert(x / 0 == 0)
+//doesn't yield an error b/c the inner predicate is never eval'd b/c assertionsEnabled is false!
+```
