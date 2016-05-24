@@ -11,6 +11,7 @@
 7. [Match Expressions](#match-exp)
 8. [Functions and Closures](#func-and-closures)
 9. [Control Abstraction](#control-abstraction)
+10. [Composition and Inheritance](#comp-and-inher)
 
 ## Collections <a id="collections"></a>
   * [Arrays](#arrays") - Mutable sequence of objects that are all the same type
@@ -163,10 +164,10 @@ you can access the `sum` field with the `.` operator
 like Java, there are access modifiers
 
 ``` scala
-public
+//public <= this is the default access modifier
 private
 protected
-default
+//default <= this one I don't really know about for Scala.
 ```
 
 ### Methods <a id="methods"></a>
@@ -817,5 +818,6 @@ boolAssert(x / 0 == 0)
 //          at RequestResult$.<clinit>(<console>)...
 
 byNameAssert(x / 0 == 0)
-//doesn't yield an error b/c the inner predicate is never eval'd b/c assertionsEnabled is false!
+//doesn't yield an error b/c the inner predicate is never eval'd, assertionsEnabled is false!
 ```
+## Composition and Inheritance <a id="comp-and-inher"></a>
