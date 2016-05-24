@@ -549,6 +549,25 @@ echo(arr: _*)
 
 ### Tail recursion <a id="tail-rec"></a>
 
+A tail of 2 functions:
+
+``` scala
+//recursive
+def approximate(guess: Double): Double =
+    if (isGoodEnough(guess)) guess
+    else approximate(improve(guess))
+
+//iterative
+def approximateLoop(initialGuess: Double): Double = {
+    var guess = initialGuess
+    while (!isGoodEnough(guess))
+      guess = improve(guess)
+    guess
+  }
+```
+You might think that the iterative approach would be faster, but actually, they both incur the same overhead. The Scala compiler is able to transform the
+recursive call into an iterative one using *tail-call optimization*. If the recursive call is not in the tail poisition, the compiler can not optimize it.
+
 ``` scala
 // Blowin' up da stack
 def boom(x: Int): Int =
@@ -583,4 +602,4 @@ def nestedFun(x: Int) {
 ```
 The funValue variable refers to a function value that essentially wraps a call to nestedFun. When you apply the function value to an argument, it turns around and applies nestedFun to that same argument, and returns the result. You might hope, therefore, the Scala compiler would perform a tail-call optimization, but in this case it would not. Thus, tail-call optimization is limited to situations in which a method or nested function calls itself directly as its last operation, without going through a function value or some other intermediary.
 
-If you still don't get it, see [Tail recursion](#tail-rec)
+If you still don't get it, see this awesome writeup  [Tail recursion](#tail-rec)
