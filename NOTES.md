@@ -1004,3 +1004,79 @@ class ArrayElement(conts: Array[String]) extends Element {
 A caveat: *If you leave out an extends clause, the Scala compiler implicitly assumes your class extends from `scala.AnyRef`, 
 which on the Java platform is the same as class `java.lang.Object`. Thus, class `Element` **implicitly** extends class `AnyRef`.*
 
+Scala only has 2 namespaces, as opposed to Java's 4:
+
+Java - _**fields**, **methods**, **types**, and **packages**_
+
+Scala - _**types** (classes and trait names), and **values** (fields, methods, packages, and singleton objects)_
+
+**Note: The reason Scala places fields and methods into the same namespace is precisely so you can override a parameterless method with a val.** 
+
+####Defining parametric fields
+
+Notice in the `ArrayElement` class we have to define `contents`. This is redundant work. Since Scala defines fields and methods as *types*, 
+we can say: 
+
+``` scala
+
+class ArrayElement(val contents: Array[String]) extends Element
+
+```
+
+we prefixed `contents` with `val`, but we could have used `var` or made it `private`, etc. Take a look at:
+
+``` scala
+
+class Cat {
+  val dangerous = false
+}
+class Tiger(
+  override val dangerous: Boolean,
+  private var age: Int
+) extends Cat
+
+```
+
+Tiger's definition here is short-hand for:
+
+``` scala
+
+//param1 and param2 are, of course, arbitrary names. Just make sure they don't clash with other names in the scope!
+class Tiger(param1: Boolean, param2: Int) extends Cat {
+  override val dangerous = param1
+  private var age = param2
+}
+
+```
+
+#### Calling a superclass constructor
+
+Pass the arg(s) to the superclass
+
+```` scala
+
+class LineElement(s: String) extends ArrayElement(Array(s)) {
+  override def width = s.length
+  override def height = 1
+}
+
+```
+
+#### Overriding
+
+*The modifier is optional if a member implements an abstract member with the same name. The modifier is forbidden if a 
+member does not override or implement some other member in a base class.*
+
+**Problems: The fragile base class** -  *if you add new members to base classes (which we usually call superclasses) in 
+a class hierarchy, you risk breaking client code.* If you add a method to a superclass, and there is no override 
+modifier on a subclass for a method with that same name, Scala will give a compiler error.
+
+#### Dynamicly Bound Methods
+
+*method invocations on variables and expressions are dynamically bound. This means that the actual method implementation 
+invoked is determined at run time based on the class of the object, not the type of the variable or expression.*
+
+#### *final* members
+
+* If you declare a *value* final, a subclass can not override it.
+* A *final* class may not have a subclass
