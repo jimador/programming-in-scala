@@ -13,6 +13,7 @@
 9. [Control Abstraction](#control-abstraction)
 10. [Composition and Inheritance](#comp-and-inher)
 11. [Traits] (#traits)
+12. [Packages and Imports] (#packages-imports)
 
 ## Collections <a id="collections"></a>
   * [Arrays](#arrays") - Mutable sequence of objects that are all the same type
@@ -1195,3 +1196,5 @@ val queue = (new BasicIntQueue
   * If you don't know what to make it, start off with a trait. It has the most flexibility, and you can always change it
     later.
 
+
+## Packages and Imports <a id="packages-imports"></a>
