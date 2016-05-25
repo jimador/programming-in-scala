@@ -1080,3 +1080,117 @@ invoked is determined at run time based on the class of the object, not the type
 
 * If you declare a *value* final, a subclass can not override it.
 * A *final* class may not have a subclass
+
+## Traits
+
+Defined using the keyword `Trait`
+
+``` scala
+
+// traits have the default superclass of `AnyRef` just like classes
+trait Philosophical {
+  def philosophize() {
+    println("I consume memory, therefore I am!")
+  }
+}
+    
+```
+
+A trait encapsulates method and field definitions, which can then be reused by mixing them into classes. 
+Unlike class inheritance, in which each class must inherit from just one superclass, a class can mix in any number of traits.
+Once a trait is defined, it can be mixed in to a class using either the extends or with keywords. Generally we "mix in" 
+traits rather than inherit from them, because mixing in a trait has important differences from the multiple 
+inheritance found in many other languages. Mix in traits with the `extends` keyword and use multiple traits with the `with`
+keyword.
+
+``` scala 
+
+// a single trait `extends`
+class Frog extends Philosophical {
+  override def toString = "green"
+}
+
+// multiple traits `extends` and `with`
+class Animal
+  trait HasLegs
+  
+class Frog extends Animal with Philosophical with HasLegs {
+  override def toString = "green"
+}
+
+```
+
+Traits are not just "*Java interfaces with concrete methods*". They can also declare fields and maintain state. Traits
+can contain anything a class definition can, with 2 exceptions:
+
+1. They can not take class parameters. `trait ThisDoesntWork(x: Int, y: Int)`
+2. Super calls are dynamically bound. If you call `super.toString` in a `trait` the call to `toString` is determined
+ each time the trait is mixed into a concrete class. This behavior allows traits to work as a *stackable modifications*. 
+
+#### Stackable modifications to a class
+
+Let's say you want to make a queue of Integers. The queue has 2 methods `put` and `get`
+
+``` scala
+
+abstract class IntQueue {
+  def get(): Int
+  def put(x: Int)
+}
+
+
+// somewhere else in the code base we declare
+import scala.collection.mutable.ArrayBuffer
+  
+class BasicIntQueue extends IntQueue {
+  private val buf = new ArrayBuffer[Int]
+  def get() = buf.remove(0)
+  def put(x: Int) { buf += x }
+}
+```
+
+Looks nice enough. Now let's say that we wanted some optional modifications to our Queue. Depending on the situation, we might
+want an `IntQueue` that can Double the values in it, Increment the values in it, or Filter values out of it. We can do this with 
+Traits. We can define:
+
+```scala 
+
+// Double
+trait Doubling extends IntQueue {
+  abstract override def put(x: Int) { super.put(2 * x) }
+}
+
+// Inc
+trait Incrementing extends IntQueue {
+  abstract override def put(x: Int) { super.put(x + 1) }
+}
+
+// Filter
+trait Filtering extends IntQueue {
+  abstract override def put(x: Int) {
+    if (x >= 0) super.put(x)
+  }
+}
+
+// now later in the code, we can say...
+val queue = new BasicIntQueue with Doubling //WAT? This is awesome
+
+// the order is significant with mixins. Here Incrementing will happen first
+val queue = (new BasicIntQueue
+             with Filtering with Incrementing)
+             
+```
+
+**Basic Guidelines for using traits**
+  
+  * If the behavior will not be reused - make it a concrete class
+  * If the behavior will be reused across multiple, unrelated, classes - make it a trait
+  * If you want to inherit from it in Java code - use an abstract class
+  * If you plan to distribute it in compiled for, and you expect outside groups to write classes inheriting from it - 
+    lean towards using an abstract class. *if a trait gains or loses a member, it must be recompiled even if the have 
+    not changed*. If clients will only call into it, trait is fine.
+  * If efficiency is very important, use a class. Invoking a virtual method on a class is usually faster on a class in
+    Java.
+  * If you don't know what to make it, start off with a trait. It has the most flexibility, and you can always change it
+    later.
+
