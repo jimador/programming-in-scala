@@ -12,6 +12,7 @@
 8. [Functions and Closures](#func-and-closures)
 9. [Control Abstraction](#control-abstraction)
 10. [Composition and Inheritance](#comp-and-inher)
+11. [Traits] (#traits)
 
 ## Collections <a id="collections"></a>
   * [Arrays](#arrays") - Mutable sequence of objects that are all the same type
@@ -1081,7 +1082,7 @@ invoked is determined at run time based on the class of the object, not the type
 * If you declare a *value* final, a subclass can not override it.
 * A *final* class may not have a subclass
 
-## Traits
+## Traits <a id="traits></a>
 
 Defined using the keyword `Trait`
 
