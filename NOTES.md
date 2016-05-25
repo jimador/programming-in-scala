@@ -1082,7 +1082,7 @@ invoked is determined at run time based on the class of the object, not the type
 * If you declare a *value* final, a subclass can not override it.
 * A *final* class may not have a subclass
 
-## Traits <a id="traits></a>
+## Traits <a id="traits"></a>
 
 Defined using the keyword `Trait`
 
