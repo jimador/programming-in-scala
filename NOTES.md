@@ -13,7 +13,8 @@
 9. [Control Abstraction](#control-abstraction)
 10. [Composition and Inheritance](#comp-and-inher)
 11. [Traits](#traits)
-12. [Packages, Imports, and Access Modifiers](#packages-imports)
+12. [Packages, Imports](#packages-imports)
+13. [Access Modifiers](#access-modifiers)
 
 ## Collections <a id="collections"></a>
   * [Arrays](#arrays") - Mutable sequence of objects that are all the same type
@@ -1199,11 +1200,6 @@ val queue = (new BasicIntQueue
 
 ## Packages and Imports <a id="packages-imports"></a>
 
- 1. [Access Modifiers](#access-modifiers)
- 2. [Protection Scoping](#protection-scoping)
- 3. [Visibility](#visibility)
-
-
 Scala allows for 2 types of package declaration:
 
 Java Style:
@@ -1261,6 +1257,8 @@ public class Quux {
     ...
 }
 
+```
+
 Where as in Scala, you can say
 
 ``` scala
@@ -1297,7 +1295,7 @@ package foo {
         // No need to five fully qualified name (`foo.bar.baz.Missile`)
         val missileOne = new baz.Missile1
         val missileTwo = new foo.baz.Missile2
-        val missileThree = new /_root/_.baz.Missile3
+        val missileThree = new _root_.baz.Missile3
       }
     }
   }
@@ -1406,7 +1404,10 @@ import Predef._    // everything in the Predef object
 
 ```
 
-### *Access Modifiers* <a id="access-modifiers"></a>
+## *Access Modifiers* <a id="access-modifiers"></a>
+
+1. [Protection Scoping](#protection-scoping)
+2. [Visibility](#visibility)
 
 #### *Private*
 
@@ -1446,7 +1447,7 @@ package p {
 
 Everything is public unless you specify otherwise
 
-#### *Protection Scoping* <a id="protection-scoping"></a>
+### Protection Scoping <a id="protection-scoping"></a>
 
 Access modifiers in Scala can be augmented with qualifiers. A modifier of the form private\[X\] or protected\[X\] means
 that access is private or protected "up to" X, where X designates some enclosing **package**, **class** or **singleton object**.
@@ -1492,7 +1493,7 @@ The access to `Navigator` in object `Vehicle` is permitted, because `Vehicle` is
 which is contained in `bobsrockets`. On the other hand, all code outside the package `bobsrockets` cannot access class
 `Navigator`.
 
-#### *Visibility and companion objects* <a id="visibility"></a>
+### Visibility and companion objects <a id="visibility"></a>
 
 In Java static members and instance members belong to the same class, so access modifiers apply uniformly to them. Scala
 doesn't have static members, but it does have companion objects that contain members that only exist once. e.g.
