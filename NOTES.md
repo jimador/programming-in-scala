@@ -12,8 +12,8 @@
 8. [Functions and Closures](#func-and-closures)
 9. [Control Abstraction](#control-abstraction)
 10. [Composition and Inheritance](#comp-and-inher)
-11. [Traits] (#traits)
-12. [Packages and Imports] (#packages-imports)
+11. [Traits](#traits)
+12. [Packages, Imports, and Access Modifiers](#packages-imports)
 
 ## Collections <a id="collections"></a>
   * [Arrays](#arrays") - Mutable sequence of objects that are all the same type
@@ -252,7 +252,7 @@ class ChecksumAccumulator {
        cs
      }
  }
- 
+
 ```
 
 The singleton object in this figure is named ChecksumAccumulator, the same name as the class in the previous example. When a singleton object shares the same name with a class, it is called that class's companion object. You must define both the class and its companion object in the same source file. The class is called the companion class of the singleton object. A class and its companion object can access each other's private members.
@@ -320,7 +320,7 @@ val forLineLengths =
     trimmed = line.trim
     if trimmed.matches(".*for.*")
   } yield trimmed.length
-  
+
 ```
 
 ## Exceptions <a id="exceptions"></a>
@@ -363,7 +363,7 @@ def urlFor(path: String) =
     case e: MalformedURLException =>
       new URL("http://www.scala-lang.org")
   }
-  
+
 ```
 
 ## Match Expressions <a id="match-exp"></a>
@@ -625,7 +625,7 @@ def approximateLoop(initialGuess: Double): Double = {
         guess = improve(guess)
       guess
     }
-  
+
 ```
 You might think that the iterative approach would be faster, but actually, they both incur the same overhead. The Scala compiler is able to transform the
 recursive call into an iterative one using *tail-call optimization*. If the recursive call is not in the tail poisition, the compiler can not optimize it.
@@ -636,7 +636,7 @@ recursive call into an iterative one using *tail-call optimization*. If the recu
 def boom(x: Int): Int =
    if (x == 0) throw new Exception("boom!")
    else boom(x - 1) + 1
-   
+
 ```
 
 **This function is NOT tail recursive because it performs an increment AFTER the call**
@@ -646,7 +646,7 @@ def boom(x: Int): Int =
 def bang(x: Int): Int =
     if (x == 0) throw new Exception("bang!")
     else bang(x - 1)
-    
+
 ```
 
 **now it is**
@@ -658,7 +658,7 @@ def isEven(x: Int): Boolean =
     if (x == 0) true else isOdd(x - 1)
 def isOdd(x: Int): Boolean =
   if (x == 0) false else isEven(x - 1)
-  
+
 ```
 You also won't get a tail-call optimization if the final call goes to a function value. Consider for instance the following recursive code:
 
@@ -704,7 +704,7 @@ Looks good. Users can search for files that end with what they want. But later..
 def filesContaining(query: String) =
   for (file <- filesHere; if file.getName.contains(query))
     yield file
-    
+
 ```
 
 Still looking good. But later, we want something else
@@ -715,7 +715,7 @@ Still looking good. But later, we want something else
 def filesRegex(query: String) =
   for (file <- filesHere; if file.getName.matches(query))
     yield file
-    
+
 ```
 
 There's a lot of duplication of logic going on here. Function values to the rescue
@@ -920,7 +920,7 @@ val column1 = elem("hello") above elem("***")
 val column2 = elem("***") above elem("world")
 column1 beside column2
 
-//hello ***  
+//hello ***
 // *** world
 
 ```
@@ -949,13 +949,13 @@ abstract class Element {
 ```
 
 #### Parameterless methods
-*parameterless methods* - methods like `height` are called *parameterless methods*, because they take no args. This is common in Scala. 
-Methods defined with an empty `()` are called *empty-paren methods*. (`height()`) The recommended convention is:  
+*parameterless methods* - methods like `height` are called *parameterless methods*, because they take no args. This is common in Scala.
+Methods defined with an empty `()` are called *empty-paren methods*. (`height()`) The recommended convention is:
 
 **use a parameterless method whenever there are no parameters AND the method accesses mutable state ONLY by reading fields
 of the containing object (DOES NOT CHANGE MUTABLE STATE).**
 
-This convention supports the _**Uniform Access Principle (UAP)**_, which says *which says that client code should not be affected 
+This convention supports the _**Uniform Access Principle (UAP)**_, which says *which says that client code should not be affected
 by a decision to implement an attribute as a field or method*
 
 That seems a little convoluted to me, so let's look at an example. The *UAP* says that the client shouldn't care where the
@@ -971,24 +971,24 @@ abstract class Element {
 
 ```
 
-The two definitions of `Element` should be functionally identical, and indeed they are. The only differences could be that 
-accessing the fields as a `val` should be faster because they are precomputed when the `class` is initialized. But, they 
-will require extra memory to store those `val`'s instead of lazily loading them on the fly. 
+The two definitions of `Element` should be functionally identical, and indeed they are. The only differences could be that
+accessing the fields as a `val` should be faster because they are precomputed when the `class` is initialized. But, they
+will require extra memory to store those `val`'s instead of lazily loading them on the fly.
 
-**Note: ** *Java does not implement the uniform access principle. So Java declares string.length(), not string.length 
+**Note: ** *Java does not implement the uniform access principle. So Java declares string.length(), not string.length
 and array.length, not array.length()).*
 
 **The main point is the client SHOULD NOT CARE if the implementation changes**
 
-Scala is very liberal when it comes to mixing parameterless and empty-paren methods. In particular, you can override a 
-parameterless method with an empty-paren method, and vice versa. You can also leave off the empty parentheses on an 
+Scala is very liberal when it comes to mixing parameterless and empty-paren methods. In particular, you can override a
+parameterless method with an empty-paren method, and vice versa. You can also leave off the empty parentheses on an
 invocation of any function that takes no arguments. e.x.
 
-``` scala 
+``` scala
 
 Array(1, 2, 3).toString
 "abc".length
-  
+
 ```
 
 #### Extending classes
@@ -1003,7 +1003,7 @@ class ArrayElement(conts: Array[String]) extends Element {
 
 ```
 
-A caveat: *If you leave out an extends clause, the Scala compiler implicitly assumes your class extends from `scala.AnyRef`, 
+A caveat: *If you leave out an extends clause, the Scala compiler implicitly assumes your class extends from `scala.AnyRef`,
 which on the Java platform is the same as class `java.lang.Object`. Thus, class `Element` **implicitly** extends class `AnyRef`.*
 
 Scala only has 2 namespaces, as opposed to Java's 4:
@@ -1012,12 +1012,12 @@ Java - _**fields**, **methods**, **types**, and **packages**_
 
 Scala - _**types** (classes and trait names), and **values** (fields, methods, packages, and singleton objects)_
 
-**Note: The reason Scala places fields and methods into the same namespace is precisely so you can override a parameterless method with a val.** 
+**Note: The reason Scala places fields and methods into the same namespace is precisely so you can override a parameterless method with a val.**
 
 ####Defining parametric fields
 
-Notice in the `ArrayElement` class we have to define `contents`. This is redundant work. Since Scala defines fields and methods as *types*, 
-we can say: 
+Notice in the `ArrayElement` class we have to define `contents`. This is redundant work. Since Scala defines fields and methods as *types*,
+we can say:
 
 ``` scala
 
@@ -1066,16 +1066,16 @@ class LineElement(s: String) extends ArrayElement(Array(s)) {
 
 #### Overriding
 
-*The modifier is optional if a member implements an abstract member with the same name. The modifier is forbidden if a 
+*The modifier is optional if a member implements an abstract member with the same name. The modifier is forbidden if a
 member does not override or implement some other member in a base class.*
 
-**Problems: The fragile base class** -  *if you add new members to base classes (which we usually call superclasses) in 
-a class hierarchy, you risk breaking client code.* If you add a method to a superclass, and there is no override 
+**Problems: The fragile base class** -  *if you add new members to base classes (which we usually call superclasses) in
+a class hierarchy, you risk breaking client code.* If you add a method to a superclass, and there is no override
 modifier on a subclass for a method with that same name, Scala will give a compiler error.
 
 #### Dynamicly Bound Methods
 
-*method invocations on variables and expressions are dynamically bound. This means that the actual method implementation 
+*method invocations on variables and expressions are dynamically bound. This means that the actual method implementation
 invoked is determined at run time based on the class of the object, not the type of the variable or expression.*
 
 #### *final* members
@@ -1095,17 +1095,17 @@ trait Philosophical {
     println("I consume memory, therefore I am!")
   }
 }
-    
+
 ```
 
-A trait encapsulates method and field definitions, which can then be reused by mixing them into classes. 
+A trait encapsulates method and field definitions, which can then be reused by mixing them into classes.
 Unlike class inheritance, in which each class must inherit from just one superclass, a class can mix in any number of traits.
-Once a trait is defined, it can be mixed in to a class using either the extends or with keywords. Generally we "mix in" 
-traits rather than inherit from them, because mixing in a trait has important differences from the multiple 
+Once a trait is defined, it can be mixed in to a class using either the extends or with keywords. Generally we "mix in"
+traits rather than inherit from them, because mixing in a trait has important differences from the multiple
 inheritance found in many other languages. Mix in traits with the `extends` keyword and use multiple traits with the `with`
 keyword.
 
-``` scala 
+``` scala
 
 // a single trait `extends`
 class Frog extends Philosophical {
@@ -1115,7 +1115,7 @@ class Frog extends Philosophical {
 // multiple traits `extends` and `with`
 class Animal
   trait HasLegs
-  
+
 class Frog extends Animal with Philosophical with HasLegs {
   override def toString = "green"
 }
@@ -1127,7 +1127,7 @@ can contain anything a class definition can, with 2 exceptions:
 
 1. They can not take class parameters. `trait ThisDoesntWork(x: Int, y: Int)`
 2. Super calls are dynamically bound. If you call `super.toString` in a `trait` the call to `toString` is determined
- each time the trait is mixed into a concrete class. This behavior allows traits to work as a *stackable modifications*. 
+ each time the trait is mixed into a concrete class. This behavior allows traits to work as a *stackable modifications*.
 
 #### Stackable modifications to a class
 
@@ -1143,7 +1143,7 @@ abstract class IntQueue {
 
 // somewhere else in the code base we declare
 import scala.collection.mutable.ArrayBuffer
-  
+
 class BasicIntQueue extends IntQueue {
   private val buf = new ArrayBuffer[Int]
   def get() = buf.remove(0)
@@ -1152,10 +1152,10 @@ class BasicIntQueue extends IntQueue {
 ```
 
 Looks nice enough. Now let's say that we wanted some optional modifications to our Queue. Depending on the situation, we might
-want an `IntQueue` that can Double the values in it, Increment the values in it, or Filter values out of it. We can do this with 
+want an `IntQueue` that can Double the values in it, Increment the values in it, or Filter values out of it. We can do this with
 Traits. We can define:
 
-```scala 
+```scala
 
 // Double
 trait Doubling extends IntQueue {
@@ -1180,16 +1180,16 @@ val queue = new BasicIntQueue with Doubling //WAT? This is awesome
 // the order is significant with mixins. Here Incrementing will happen first
 val queue = (new BasicIntQueue
              with Filtering with Incrementing)
-             
+
 ```
 
 **Basic Guidelines for using traits**
-  
+
   * If the behavior will not be reused - make it a concrete class
   * If the behavior will be reused across multiple, unrelated, classes - make it a trait
   * If you want to inherit from it in Java code - use an abstract class
-  * If you plan to distribute it in compiled for, and you expect outside groups to write classes inheriting from it - 
-    lean towards using an abstract class. *if a trait gains or loses a member, it must be recompiled even if the have 
+  * If you plan to distribute it in compiled for, and you expect outside groups to write classes inheriting from it -
+    lean towards using an abstract class. *if a trait gains or loses a member, it must be recompiled even if the have
     not changed*. If clients will only call into it, trait is fine.
   * If efficiency is very important, use a class. Invoking a virtual method on a class is usually faster on a class in
     Java.
@@ -1198,3 +1198,331 @@ val queue = (new BasicIntQueue
 
 
 ## Packages and Imports <a id="packages-imports"></a>
+
+ 1. [Access Modifiers](#access-modifiers)
+ 2. [Protection Scoping](#protection-scoping)
+ 3. [Visibility](#visibility)
+
+
+Scala allows for 2 types of package declaration:
+
+Java Style:
+
+``` scala
+
+package com.foo.bar
+class Baz
+
+```
+
+and a more C/#-esque namespace convention:
+
+``` scala
+
+//syntactic sugar for the nested form (mixing Java and C# styles)
+package com.foo {
+  package bar {
+
+    // in package com.foo.bar
+    class Baz
+
+    package tests {
+
+      //in package com.foo.bar.tests
+      class BazSuite
+    }
+  }
+}
+
+```
+
+the main difference between Scala and Java here is that Scala packages "truly" nest.
+
+In Java, you might have 2 different classes `com.foo.bar.Baz` and `com.foo.bar.Qux`, and you would have to declare the full
+package structure in each class. e.g.
+
+``` java
+package com.foo.bar.baz;
+
+public class Biz {
+  // epic codez
+  ...
+}
+
+```
+
+----
+
+``` java
+package com.foo.bar.qux;
+
+public class Quux {
+    // legendary javas
+    ...
+}
+
+Where as in Scala, you can say
+
+``` scala
+
+package foo.bar {
+  package baz {
+    class Missile
+  }
+  package qux {
+    class Launch {
+      // No need to five fully qualified name (`foo.bar.baz.Missile`)
+      val nav = new baz.Missile
+    }
+  }
+}
+
+```
+
+This makes it easier to refer to packages that have the same name, in the same tree, too.
+
+``` scala
+
+package baz {
+  class Missile3
+}
+
+package foo {
+  bar {
+    package baz {
+      class Missile1
+    }
+    package qux {
+      class Launch {
+        // No need to five fully qualified name (`foo.bar.baz.Missile`)
+        val missileOne = new baz.Missile1
+        val missileTwo = new foo.baz.Missile2
+        val missileThree = new /_root/_.baz.Missile3
+      }
+    }
+  }
+  package baz {
+    class Missile2
+  }
+}
+
+```
+
+**Import clauses**, Scala has these too
+
+``` scala
+// access Missile 3
+import baz.Missile3
+
+// access all of foo
+import foo._
+
+// all members of foo.bar
+import foo.bar._
+
+/**
+  * Scala imports can appear anywhere!
+  */
+def fireTheMissiles(target: Target) {
+  import foo.bar._
+  target.killAllWith(new Missile1)
+}
+
+```
+
+> #### Scala's flexible imports
+
+> Scala's import clauses are quite a bit more flexible than Java's. There are three principal differences. In Scala, imports:
+
+> * may appear anywhere
+> * may refer to objects (singleton or regular) in addition to packages
+> * let you rename and hide some of the imported members
+
+also import Java packages!
+
+``` scala
+import java.util.regex
+
+class AStarB {
+  // Accesses java.util.regex.Pattern
+  val pat = regex.Pattern.compile("a*b")
+}
+
+// Don't stop there though. You can rename or hide members with the import selector
+// enclosed in braces
+import baz.{Missle3 => MegaNuke}
+
+// import and rename a package
+import java.{sql => S}
+
+// given:
+abstract class Fruit(
+  val name: String,
+  val color: String
+)
+
+// and:
+object Fruits {
+  object Apple extends Fruit("apple", "red")
+  object Orange extends Fruit("orange", "orange")
+  object Pear extends Fruit("pear", "yellowish")
+  val menu = List(Apple, Orange, Pear)
+}
+
+// you can import all of the members of an object like...
+import Fruit.{_}
+
+// same as saying
+import Fruit._
+
+// import all members from Fruit, but rename apple to McIntosh
+import Fruits.{Apple => McIntosh, _}
+
+// import everything BUT pear
+import Fruits.{Pear => _, _}
+
+//This is useful if you have naming collisions, like an Apple notebook and Fruit
+import Notebooks._
+import Fruits.{Apple => _, _}
+
+
+```
+
+> ##### In summary, a selector can consist of the following:
+
+> * A simple name x. This includes x in the set of imported names.
+> * A renaming clause x => y. This makes the member named x visible under the name y.
+> * A hiding clause x => _. This excludes x from the set of imported names.
+> * A catch-all `_'. This imports all members except those members mentioned in a preceding clause. If a catch-all is given, it must come last in the list of import selectors
+
+Scala has some implicit imports, like Java
+
+``` scala
+
+//included for you
+import java.lang._ // everything in the java.lang package
+import scala._     // everything in the scala package
+import Predef._    // everything in the Predef object
+
+```
+
+### *Access Modifiers* <a id="access-modifiers"></a>
+
+#### *Private*
+
+``` scala
+
+class Outer {
+class Inner {
+  private def f() { println("f") }
+    class InnerMost {
+      f() // OK
+    }
+  }
+  (new Inner).f() // error: f is not accessible
+}
+
+```
+
+#### *Protected*
+
+``` scala
+
+package p {
+  class Super {
+    protected def f() { println("f") }
+  }
+  class Sub extends Super {
+    f()
+  }
+  class Other {
+    (new Super).f()  // error: f is not accessible
+  }
+}
+
+```
+
+#### *Public* - default for Scala
+
+Everything is public unless you specify otherwise
+
+#### *Protection Scoping* <a id="protection-scoping"></a>
+
+Access modifiers in Scala can be augmented with qualifiers. A modifier of the form private\[X\] or protected\[X\] means
+that access is private or protected "up to" X, where X designates some enclosing **package**, **class** or **singleton object**.
+
+``` scala
+
+package bobsrockets {
+  package navigation {
+
+    // private to package bobsrockets
+    private[bobsrockets] class Navigator {
+
+      // accessible in all subclasses of Navigator and in all code contained in
+      // the enclosing package 'navigation' exactly like Java's 'protected' modifier
+      protected[navigation] def useStarChart() {}
+
+      class LegOfJourney {
+
+        // private to the Navigator class. It is visible from everywhere in the
+        // Navigator class
+        private[Navigator] val distance = 100
+
+      }
+
+      // most restrictive. Access restricted not just on from Navigator, but
+      // it must also be made from the very same instance of Navigator.
+      private[this] var speed = 200
+
+    }
+  }
+  package launch {
+    import navigation._
+    object Vehicle {
+      // private to 'launch'
+      private[launch] val guide = new Navigator
+    }
+  }
+}
+
+```
+
+The access to `Navigator` in object `Vehicle` is permitted, because `Vehicle` is contained in package `launch`,
+which is contained in `bobsrockets`. On the other hand, all code outside the package `bobsrockets` cannot access class
+`Navigator`.
+
+#### *Visibility and companion objects* <a id="visibility"></a>
+
+In Java static members and instance members belong to the same class, so access modifiers apply uniformly to them. Scala
+doesn't have static members, but it does have companion objects that contain members that only exist once. e.g.
+the `object Rocket` is a companion of `class Rocket`
+
+``` scala
+
+class Rocket {
+  import Rocket.fuel
+  private def pnr = fuel > 20
+}
+
+object Rocket {
+  private def fuel = 10
+  def chooseStrategy(rocket: Rocket) {
+    if (rocket.pnr)
+      goHome()
+    else
+      pickAStar()
+  }
+  def goHome() {}
+  def pickAStar() {}
+}
+
+```
+
+Scala's access rules privilege companion objects and classes when it comes to private or protected accesses. A class
+shares all its access rights with its companion object and vice versa. In particular, an object can access all private
+members of its companion class, just as a class can access all private members of its companion object.
+
+**Note**: One exception where the similarity between Scala and Java breaks down concerns protected static members.
+A protected static member of a Java class C can be accessed in all subclasses of C. By contrast, a protected member in
+a companion object makes no sense, as singleton objects don't have any subclasses.
