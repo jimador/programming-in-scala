@@ -1703,9 +1703,9 @@ def simplifyTop(expr: Expr): Expr = expr match {
 
 ```
 
-*A **pattern match** includes a sequence of alternatives, each starting with the keyword case. Each alternative includes a
-pattern and one or more expressions, which will be evaluated if the pattern matches. An arrow symbol => separates the
-pattern from the expressions.*
+A *pattern match* includes a sequence of alternatives, each starting with the keyword case. Each alternative includes a
+**pattern** and **one or more expressions**, which *will be evaluated if the pattern matches*. An arrow symbol `=>` separates the
+pattern from the expressions.
 
 A **constant pattern** like "+" or 1 matches values that are equal to the constant with respect to ==. A **variable pattern**
 like e matches every value. The variable then refers to that value in the right hand side of the case clause. In this
@@ -1713,7 +1713,7 @@ example, note that the first three examples evaluate to e, *a variable that is b
 The **wildcard pattern (_)** also matches every value, but it does not introduce a variable name to refer to that value.
 
 A **constructor pattern** looks like `UnOp("-", e)`. This pattern matches *all values of type UnOp whose first argument matches
-"-" and whose second argument matches e*. Note that the arguments to the constructor are themselves patterns. This allows
+`-` and whose second argument matches e*. Note that the arguments to the constructor are themselves patterns. This allows
 you to write deep patterns using a concise notation. e.g.
 
 ``` scala
@@ -1723,7 +1723,7 @@ UnOp("-", UnOp("-", e))
 
 ```
 
-_**Note:**_ *if **NO** patterns match, a `MatchError` is thrown. *ALWAYS* cover all cases!*
+_**Note:**_ *if __NO__ patterns match, a `MatchError` is thrown. __ALWAYS__ cover all cases!*
 
 ``` scala
 expr match {
@@ -1801,7 +1801,7 @@ expr match {
 Here, using the `@`, we bind `UnOp("abs", _)` to the variable `e`. If the match succeeds, we can refer to the value
 that `e` refers to.
 
-_**Variable or Constant?**_ - Constant patterns can have symbolic names (`Nil` from the *Constant* example)
+_**Variable or Constant?**_ - Constant patterns can have symbolic names (`Nil` from the [Constant](#const-pattern) example)
 
 ``` scala
 
@@ -2140,7 +2140,7 @@ second.isDefinedAt(List()) // second only operates on a List[Int] with >= 2 elem
 
 ```
 
-#### *Patterns in for expressions*
+#### *Patterns in __for__ expressions*
 
 ``` scala
 
@@ -2150,6 +2150,8 @@ val capitals = Map("France" -> "Paris", "Japan" -> "Tokyo")
 // Naming the variables in your for expression
 for ((country, city) <- capitals)
   println("The capital of "+ country +" is "+ city)
+
+```
 
 <a id="patterns-project"></a>
 ### Patterns Denouement
