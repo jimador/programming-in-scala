@@ -2202,9 +2202,7 @@ In Scala a `List[T]` is
     - in Scala `Nothing` is at the bottom of the class hierarchy, so it is a subtype of everything.
 
 
-### List operations not covered in [Basic Collections](#basic_collections)
-
-List operations in action:
+### List operations in action
 
 ``` scala
 
