@@ -16,6 +16,7 @@
 12. [Packages, Imports](#packages-imports)
 13. [Access Modifiers](#access-modifiers)
 14. [Case Classes and Pattern Matching](#case-classes-and-pattern-matching)
+15. [Working with Lists](#working-with-lists)
 
 <a id="collections"></a>
 ## Collections
@@ -2174,6 +2175,9 @@ As another example, here's the expression ((a / (b * c) + 1 / n) / 3) in two dim
                                                     ---------
                                                         3
 
+<a id="working-with-lists"></a>
+## Working with Lists
+
 <!--Sources-->
-[ch15Source]: https://github.com/jimador/programming-in-scala/tree/master/src/main/scala/programming/in/scala/ch15/expr/
-[ch10Source]: https://github.com/jimador/programming-in-scala/tree/master/src/main/scala/programming/in/scala/ch10/layout/
+[ch15Source]: src/main/scala/programming/in/scala/ch15/expr/
+[ch10Source]: src/main/scala/programming/in/scala/ch10/layout/
