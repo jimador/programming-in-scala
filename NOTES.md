@@ -1675,7 +1675,7 @@ abstract class Expr
 
 Here we have an abstract base class `Expr` with **four** subclasses, which are all _**Case Classes**_.
 
-<a id="case-classes></a>
+<a id="case-classes"></a>
 ### Case Classes
 
 Case classes adds some convenient features to our definition out-of-the-box.
