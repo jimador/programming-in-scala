@@ -2161,6 +2161,7 @@ Code available [here][ch15Source]
 The proposed task is to write an expression formatter class that displays an arithmetic expression in a two-dimensional
 layout. Divisions such as "x / x + 1" should be printed vertically, by placing the numerator on top of the denominator,
 like this:
+
                                                         x
                                                      ------
                                                       x + 1
