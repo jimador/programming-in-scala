@@ -1,9 +1,10 @@
->#Notes for *Programming in Scala, 1st Ed*
+> # Notes for *Programming in Scala, 1st Ed*
 
 ***
+
 # Contents
-1. [Collections](#collections)
-2. [Functional Style](#fp)
+1. [Basic Collections](#basic-collections)
+2. [Functional Style Example](#functional-ex)
 3. [Classes and Objects](#classes)
 4. [Operator Overload](#op-overloading)
 5. [Control Structures](#control-structures)
@@ -18,8 +19,8 @@
 14. [Case Classes and Pattern Matching](#case-classes-and-pattern-matching)
 15. [Working with Lists](#working-with-lists)
 
-<a id="collections"></a>
-## Collections
+<a id="basic-collections"></a>
+## Basic Collections
   * [Arrays](#arrays") - Mutable sequence of objects that are all the same type
     * `val array = new Array[Int](0,1,2)`
   * [Lists](#lists) - Immutable sequence of objects that are all the same type
@@ -75,7 +76,7 @@ val numNames2 = Array.apply("zero", "one", "two")
 | `List()` or `Nil`	                                                   | The empty List
 | `List("Cool", "tools", "rule")`                                    | new List |
 | `::`	                                                           | Cons operator |
-| `:::`	                                                           | Cons 2 lists |
+| `:::`	                                                           | Concatenate 2 lists |
 | `myList(2)`	                                                       | element at index 2 (zero based) |
 | `count(s => s.length == 4)`                                        | Counts the number of string elements in length 4 |
 | `drop(2)`	                                                       | Returns the list without its first 2 elements |
@@ -134,6 +135,7 @@ treasureMap += (3 -> "Dig.")
 
 ```
 
+<a id="functional-ex"></a>
 ### File reading example
 
 ```scala
@@ -2177,6 +2179,168 @@ As another example, here's the expression ((a / (b * c) + 1 / n) / 3) in two dim
 
 <a id="working-with-lists"></a>
 ## Working with Lists
+
+[List definition from collections](#lists)
+
+_**Constructing a list**_
+
+``` scala
+
+val fruit = "apples" :: ("oranges" :: ("pears" :: Nil))
+val nums  = 1 :: (2 :: (3 :: (4 :: Nil)))
+val diag3 = (1 :: (0 :: (0 :: Nil))) ::
+          (0 :: (1 :: (0 :: Nil))) ::
+          (0 :: (0 :: (1 :: Nil))) :: Nil
+val empty = Nil
+
+```
+
+In Scala a `List[T]` is
+  * _Covariant_ - This means that for each pair of types `S` and `T`, if `S` is a subtype of `T`, then `List[S]` is a subtype of `List[T]`.
+  * _Homogeneous_ - The elements have the same type
+  * _The Empty List_ `List()`, `List[Nothing]`, `Nil`
+    - in Scala `Nothing` is at the bottom of the class hierarchy, so it is a subtype of everything.
+
+
+### List operations not covered in [Basic Collections](#basic_collections)
+
+List operations in action:
+
+``` scala
+
+// merge sort
+def msort[T](less: (T, T) => Boolean)
+    (xs: List[T]): List[T] = {
+
+  def merge(xs: List[T], ys: List[T]): List[T] =
+    (xs, ys) match {
+      case (Nil, _) => ys
+      case (_, Nil) => xs
+      case (x :: xs1, y :: ys1) =>
+        if (less(x, y)) x :: merge(xs1, ys)
+        else y :: merge(xs, ys1)
+    }
+
+  val n = xs.length / 2
+  if (n == 0) xs
+  else {
+    val (ys, zs) = xs splitAt n
+    merge(msort(less)(ys), msort(less)(zs))
+  }
+}
+
+msort((x: Int, y: Int) => x < y)(List(5, 7, 1, 3))
+// => List[Int] = List(1, 3, 5, 7)
+
+/**
+  * Mapping over lists
+  */
+
+List(1, 2, 3) map (_ + 1)
+val words = List("the", "quick", "brown", "fox")
+words map (_.length)
+words map (_.toList.reverse.mkString)
+words map (_.toList)
+words flatMap (_.toList)
+
+// construct pairs (i,j) 1<=j<i<5
+List.range(1, 5) flatMap (i => List.range(1, i) map (j => (i, j))
+
+// could have done that this way with for
+for (i <- List.range(1, 5); j <- List.range(1, i)) yield (i, j)
+
+// filtering lists
+List(1, 2, 3, 4, 5) filter (_ % 2 == 0)
+words filter (_.length == 3)
+
+// partition
+List(1, 2, 3, 4, 5) partition (_ % 2 == 0)
+// => (List[Int], List[Int]) = (List(2, 4),List(1, 3, 5))
+
+// find - returns an Option[T]
+List(1, 2, 3, 4, 5) find (_ % 2 == 0)
+
+// takeWhile & dropWhile
+List(1, 2, 3, -4, 5) takeWhile (_ > 0)
+words dropWhile (_ startsWith "t")
+
+// span like splitAt avoids traversing the list twice
+List(1, 2, 3, -4, 5) span (_ > 0)
+// => (List[Int], List[Int]) = (List(1, 2, 3),List(-4, 5))
+
+// predicates over lists (forall & exists)
+def hasZeroRow(m: List[List[Int]]) = m exists (row => row forall (_ == 0))
+// => hasZeroRow: (List[List[Int]])Boolean
+
+val diag3 = (1 :: (0 :: (0 :: Nil))) ::
+          (0 :: (1 :: (0 :: Nil))) ::
+          (0 :: (0 :: (1 :: Nil))) :: Nil
+
+hasZeroRow(diag3)
+// => res45: Boolean = false
+
+// to get an iterator over the list
+val it = abcde.elements
+
+// then call...
+it.next
+
+
+
+```
+
+A list to work on:
+
+``` scala
+
+val words = List("the", "quick", "brown", "fox")
+
+```
+
+#### _**Fold Left**_ `/:`
+
+A fold left operation "(z /: xs) (op)" involves three objects: a start value z, a list xs, and a binary operation op.
+The result of the fold is op applied between successive elements of the list prefixed by z. For instance:
+
+``` scala
+
+(z /: List(a, b, c)) (op) == op(op(op(z, a), b), c)
+
+// on the words list above
+("" /: words) (_ +" "+ _)
+// => java.lang.String =  the quick brown fox
+
+// to remove the space at the begining
+(words.head /: words.tail)  (_ +" "+ _)
+// => java.lang.String = the quick brown fox
+
+```
+
+                                           op
+                                           /  \
+                                          op   c
+                                         /  \
+                                        op   b
+                                       /  \
+                                      z    a
+
+#### _**Fold Right**_ `:\`
+The /: operator produces left-leaning operation trees (its syntax with the slash rising forward is intended to be a
+reflection of that). The operator has :\ as an analog that produces right-leaning trees. For instance:
+
+``` scala
+
+(List(a, b, c) :\ z) (op) == op(a, op(b, op(c, z)))
+
+```
+
+                                          op
+                                          /  \
+                                         a    op
+                                             /  \
+                                            b    op
+                                                /  \
+                                               c    z
 
 <!--Sources-->
 [ch15Source]: src/main/scala/programming/in/scala/ch15/expr/
