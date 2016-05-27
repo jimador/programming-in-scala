@@ -1,4 +1,4 @@
-package programming.in.scala.ch10
+package programming.in.scala.ch10.layout
 
 /**
   * Created by james on 5/24/2016.

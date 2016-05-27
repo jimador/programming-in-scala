@@ -1,6 +1,6 @@
-package programming.in.scala.ch10
+package programming.in.scala.ch10.layout
 
-import Element.elem
+import programming.in.scala.ch10.layout.Element.elem
 /**
   * Created by james on 5/25/2016.
   */

@@ -15,9 +15,10 @@
 11. [Traits](#traits)
 12. [Packages, Imports](#packages-imports)
 13. [Access Modifiers](#access-modifiers)
+14. [Case Classes and Pattern Matching](#case-classes-and-pattern-matching)
 
 <a id="collections"></a>
-## Collections 
+## Collections
   * [Arrays](#arrays") - Mutable sequence of objects that are all the same type
     * `val array = new Array[Int](0,1,2)`
   * [Lists](#lists) - Immutable sequence of objects that are all the same type
@@ -43,7 +44,7 @@
     * `+` or `+=` to add
 
 <a id="arrays"></a>
-### Arrays 
+### Arrays
 ``` scala
 val greetStrings = new Array[String](3)
 greetStrings(0) = "Hello"
@@ -67,7 +68,7 @@ val numNames2 = Array.apply("zero", "one", "two")
 ```
 
 <a id="lists"></a>
-### Lists 
+### Lists
 | Common List Operations                                           | Explanation                          |
 | -----------------------------------------------------------------| ------------------------------------ |
 | `List()` or `Nil`	                                                   | The empty List
@@ -96,13 +97,13 @@ val numNames2 = Array.apply("zero", "one", "two")
 | `tail`	                                                           | Returns the list minus its first element |
 
 <a id="tuples"></a>
-### Tuples 
+### Tuples
 
 The actual type of a tuple depends on the number of elements it contains and the types of those elements. Thus, the type of (99, "Luftballons")
 is Tuple2\[Int, String]. The type of ('u', 'r', "the", 1, 4, "me") is Tuple6\[Char, Char, String, Int, Int, String]
 
 <a id="sets"></a>
-### Sets 
+### Sets
 
 Although the default set implementations produced by the mutable and immutable Set factory methods shown thus far will
 likely be sufficient for most situations, occasionally you may want an explicit set class. Fortunately, the syntax is
@@ -119,7 +120,7 @@ println(hashSet + "Coriander")
 ```
 
 <a id="maps"></a>
-### Maps 
+### Maps
 
 ``` scala
 
@@ -155,7 +156,7 @@ for (line <- lines) {
 ```
 
 <a id="classes"></a>
-## Classes and Objects 
+## Classes and Objects
 
 ``` scala
 
@@ -190,7 +191,7 @@ protected
 ```
 
 <a id="methods"></a>
-### Methods 
+### Methods
 ##### method parameters are vals not vars
 ``` scala
 
@@ -220,14 +221,14 @@ class ChecksumAccumulator {
 
 ```
 
-**One puzzler to watch out for is that whenever you leave off the equals sign before the body of a function, its result 
+**One puzzler to watch out for is that whenever you leave off the equals sign before the body of a function, its result
 type will definitely be Unit.**
 
 *Note: `;` is optional. Scala will infer it.*
 
 >The rules of semicolon inference
 
->1. The precise rules for statement separation are surprisingly simple for how well they work. In short, a line ending is 
+>1. The precise rules for statement separation are surprisingly simple for how well they work. In short, a line ending is
 treated as a semicolon unless one of the following conditions is true:
 >2. The line in question ends in a word that would not be legal as the end of a statement, such as a period or an infix operator.
 >3. The next line begins with a word that cannot start a statement.
@@ -235,7 +236,7 @@ treated as a semicolon unless one of the following conditions is true:
 
 ### Singleton objects
 
-**Classes in Scala cannot have static members. Instead, Scala has singleton objects. A singleton object definition looks 
+**Classes in Scala cannot have static members. Instead, Scala has singleton objects. A singleton object definition looks
 like a class definition, except instead of the keyword class you use the keyword `object`.**
 
 ``` scala
@@ -261,13 +262,13 @@ like a class definition, except instead of the keyword class you use the keyword
 
 ```
 
-The singleton object in this figure is named ChecksumAccumulator, the same name as the class in the previous example. 
-When a singleton object shares the same name with a class, it is called that class's companion object. You must define 
+The singleton object in this figure is named ChecksumAccumulator, the same name as the class in the previous example.
+When a singleton object shares the same name with a class, it is called that class's companion object. You must define
 both the class and its companion object in the same source file. The class is called the companion class of the singleton
 object. A class and its companion object can access each other's private members. One way to think of singleton objects is as the home for any static methods you might have written in Java
 
 <a id="op-overloading"></a>
-## Operator Overloading 
+## Operator Overloading
 **Yes, you can overload operators. But, only do it where it would makes sense and will make the code more readable (This is not C++).**
 
 ``` scala
@@ -300,7 +301,7 @@ class Rational(n: Int, d: Int) {
 ```
 
 <a id="control-structures"></a>
-## Control Structures 
+## Control Structures
 
 |  Syntax                   |                                                                 |
 | ----------------------- | --------------------------------------------------- |
@@ -334,7 +335,7 @@ val forLineLengths =
 ```
 
 <a id="exceptions"></a>
-## Exceptions 
+## Exceptions
 
 * throw like Java exceptions
   * `throw new IllegalArgumentException`
@@ -378,7 +379,7 @@ def urlFor(path: String) =
 ```
 
 <a id="match-exp"></a>
-## Match Expressions 
+## Match Expressions
 ``` scala
 val firstArg = if (args.length > 0) args(0) else ""
 
@@ -427,7 +428,7 @@ val i = searchFrom(0)
 _**the Scala compiler will tail-call optimize this recursive code**_
 
 <a id="func-and-closures"></a>
-## Functions and Closures 
+## Functions and Closures
   * [Local functions](#local-func)
   * [First-class functions](#first-class-func)
   * [Placeholder syntax](#placeholder)
@@ -435,7 +436,7 @@ _**the Scala compiler will tail-call optimize this recursive code**_
   * [Tail recursion](#tail-rec)
 
 <a id="local-func"></a>
-### Local functions 
+### Local functions
 
 Better than private methods in Java
 
@@ -458,7 +459,7 @@ def processFile(filename: String, width: Int) {
 
 ```
 
-Here, `processLine` is scoped to inside `processFile` and no one else can access it. But we can do better. Since `width` 
+Here, `processLine` is scoped to inside `processFile` and no one else can access it. But we can do better. Since `width`
 and `fileName` are scoped to `processFile` we don't need to pass those in. A child def has access to it's parent's scope.
 
 ``` scala
@@ -483,8 +484,8 @@ object LongLines {
 ```
 
 <a id="first-class-func"></a>
-### First-class functions 
-Scala has first-class functions. A function literal is compiled into a class that when instantiated at runtime is a function 
+### First-class functions
+Scala has first-class functions. A function literal is compiled into a class that when instantiated at runtime is a function
 value. The difference is, literals exist in the source code and function values are objects at runtime. e.g.
 
 ``` scala
@@ -493,7 +494,7 @@ value. The difference is, literals exist in the source code and function values 
 
 ```
 
-The `=>` designates that this function converts the thing on the left (any integer x) to the thing on the right (x + 1). 
+The `=>` designates that this function converts the thing on the left (any integer x) to the thing on the right (x + 1).
 So, this is a function mapping any integer x to x + 1.
 
 ``` scala
@@ -509,9 +510,9 @@ increase = (x: Int) => {
 ```
 
 <a id="placeholder"> </a>
-### Placeholder syntax `_` 
+### Placeholder syntax `_`
 
-To make a function literal even more concise, you can use underscores as placeholders for one or more parameters, so 
+To make a function literal even more concise, you can use underscores as placeholders for one or more parameters, so
 long as each parameter appears only one time within the function literal.
 
 `someNumbers.filter(_ > 0)`
@@ -547,22 +548,22 @@ results in `sum: (Int,Int,Int)Int`
 `sum(1,2,3)` results in `Int = 6`
 
 `val a = sum _` results in `a: (Int, Int, Int) => Int = <function>`
-now we can say `a(1,2,3)` and we get `Int = 6`. The Scala compliler instantiated a function value that takes the 3 integer 
-parameters missing from the partially applied function expression, `sum _`, and assigns a reference to that new function 
-value to the variable a. The variable name `a` refers to a function value object that is generated by the Scala compiler 
-from the partially applied function expression, `sum _`.the compiler translates the expression `a(1,2,3)` into an invocation 
-of the function value's `apply` method. The `apply` method generated takes 3 args b/c 3 is the number of missing args in 
-the `sum _` expression. The Scala compiler translates the expression `a(1, 2, 3)` into an invocation of the function value's 
+now we can say `a(1,2,3)` and we get `Int = 6`. The Scala compliler instantiated a function value that takes the 3 integer
+parameters missing from the partially applied function expression, `sum _`, and assigns a reference to that new function
+value to the variable a. The variable name `a` refers to a function value object that is generated by the Scala compiler
+from the partially applied function expression, `sum _`.the compiler translates the expression `a(1,2,3)` into an invocation
+of the function value's `apply` method. The `apply` method generated takes 3 args b/c 3 is the number of missing args in
+the `sum _` expression. The Scala compiler translates the expression `a(1, 2, 3)` into an invocation of the function value's
 `apply` method, passing in the three arguments 1, 2, and 3. Thus, `a(1, 2, 3)` is a short form for
 
 `a.apply(1, 2, 3)`
 
-This apply method, defined in the class generated automatically by the Scala compiler from the expression `sum _`, 
-simply forwards those three missing parameters to `sum`, and returns the result. In this case apply invokes `sum(1, 2, 3)`, 
-and returns what sum returns, which is 6. Here, the `_` is used to represent the enitre parameter list. Now, although 
-`sum _` is indeed a partially applied function, it may not be obvious to you why it is called this. It has this name 
-because you are not applying that function to all of its arguments. In the case of `sum _`, you are applying it to none 
-of its arguments. But you can also express a partially applied function by supplying some but not all of the required 
+This apply method, defined in the class generated automatically by the Scala compiler from the expression `sum _`,
+simply forwards those three missing parameters to `sum`, and returns the result. In this case apply invokes `sum(1, 2, 3)`,
+and returns what sum returns, which is 6. Here, the `_` is used to represent the enitre parameter list. Now, although
+`sum _` is indeed a partially applied function, it may not be obvious to you why it is called this. It has this name
+because you are not applying that function to all of its arguments. In the case of `sum _`, you are applying it to none
+of its arguments. But you can also express a partially applied function by supplying some but not all of the required
 arguments. Here's an example:
 
 ``` scala
@@ -575,14 +576,14 @@ b: (Int) => Int = <function>
 
 Now we have a partially applied function, `b` that is only missing the middle argument
 
-If you are writing a partially applied function expression in which you leave off all parameters, such as println _ 
-or sum _, you can express it more concisely by leaving off the underscore if a function is required at that point in 
+If you are writing a partially applied function expression in which you leave off all parameters, such as println _
+or sum _, you can express it more concisely by leaving off the underscore if a function is required at that point in
 the code.
 
 `someNumbers.foreach(println)`
 
 <a id="closures"></a>
-### Closures 
+### Closures
 
 So far we've only looked at function literals that refer to passed in parameters. You can also refer to variables defined
 elsewhere.
@@ -597,23 +598,23 @@ addMore(10)
 
 ```
 
-The function value (the object) that's created at runtime from this function literal is called a closure. The name 
-arises from the act of "closing" the function literal by "capturing" the bindings of its free variables. A function 
-literal with no free variables, such as `(x: Int) => x + 1`, is called a closed term, where a term is a bit of source 
-code. Thus a function value created at runtime from this function literal is not a closure in the strictest sense, 
-because `(x: Int) => x + 1` is already closed as written. But any function literal with free variables, such as 
-`(x: Int) => x + more`, is an open term. Therefore, any function value created at runtime from `(x: Int) => x + more` 
-will by definition require that a binding for its free variable, more, be captured. The resulting function value, which 
-will contain a reference to the captured more variable, is called a closure, therefore, because the function value is 
+The function value (the object) that's created at runtime from this function literal is called a closure. The name
+arises from the act of "closing" the function literal by "capturing" the bindings of its free variables. A function
+literal with no free variables, such as `(x: Int) => x + 1`, is called a closed term, where a term is a bit of source
+code. Thus a function value created at runtime from this function literal is not a closure in the strictest sense,
+because `(x: Int) => x + 1` is already closed as written. But any function literal with free variables, such as
+`(x: Int) => x + more`, is an open term. Therefore, any function value created at runtime from `(x: Int) => x + more`
+will by definition require that a binding for its free variable, more, be captured. The resulting function value, which
+will contain a reference to the captured more variable, is called a closure, therefore, because the function value is
 the end product of the act of closing the open term, `(x: Int) => x + more`.
 
 **Scala's closures capture variables themselves, not the value to which variables refer.**
 
-What if a closure accesses some variable that has several different copies as the program runs? For example, what if a 
-closure uses a local variable of some function, and the function is invoked many times? Which instance of that variable 
+What if a closure accesses some variable that has several different copies as the program runs? For example, what if a
+closure uses a local variable of some function, and the function is invoked many times? Which instance of that variable
 gets used at each access? **the instance used is the one that was active at the time the closure was created.**
 
-Each time this function is called it will create a new closure. Each closure will access the more variable that was 
+Each time this function is called it will create a new closure. Each closure will access the more variable that was
 active when the closure was created.
 
 ``` scala
@@ -635,7 +636,7 @@ inc9999(10)
 ```
 
 <a id="repeated-params"></a>
-### Repeated parameters 
+### Repeated parameters
 
 ``` scala
 
@@ -673,7 +674,7 @@ echo(arr: _*)
 ```
 
 <a id="tail-rec"> </a><a id="rec-tail"></a>
-### Tail recursion 
+### Tail recursion
 
 A tail of 2 functions:
 
@@ -694,8 +695,8 @@ def approximateLoop(initialGuess: Double): Double = {
 
 ```
 
-You might think that the iterative approach would be faster, but actually, they both incur the same overhead. The Scala 
-compiler is able to transform the recursive call into an iterative one using *tail-call optimization*. If the recursive 
+You might think that the iterative approach would be faster, but actually, they both incur the same overhead. The Scala
+compiler is able to transform the recursive call into an iterative one using *tail-call optimization*. If the recursive
 call is not in the tail position, the compiler can not optimize it.
 
 ``` scala
@@ -719,7 +720,7 @@ def bang(x: Int): Int =
 
 _**now it is**_
 
-Scala only optimizes directly recursive calls back to the same function making the call. If the recursion is indirect, 
+Scala only optimizes directly recursive calls back to the same function making the call. If the recursion is indirect,
 as in the following example of two mutually recursive functions, no optimization is possible:
 
 ``` scala
@@ -731,7 +732,7 @@ def isOdd(x: Int): Boolean =
 
 ```
 
-You also won't get a tail-call optimization if the final call goes to a function value. Consider for instance the following 
+You also won't get a tail-call optimization if the final call goes to a function value. Consider for instance the following
 recursive code:
 
 ``` scala
@@ -742,26 +743,26 @@ def nestedFun(x: Int) {
 }
 
 ```
-The funValue variable refers to a function value that essentially wraps a call to nestedFun. When you apply the function 
-value to an argument, it turns around and applies nestedFun to that same argument, and returns the result. You might hope, 
-therefore, the Scala compiler would perform a tail-call optimization, but in this case it would not. Thus, tail-call 
-optimization is limited to situations in which a method or nested function calls itself directly as its last operation, 
+The funValue variable refers to a function value that essentially wraps a call to nestedFun. When you apply the function
+value to an argument, it turns around and applies nestedFun to that same argument, and returns the result. You might hope,
+therefore, the Scala compiler would perform a tail-call optimization, but in this case it would not. Thus, tail-call
+optimization is limited to situations in which a method or nested function calls itself directly as its last operation,
 without going through a function value or some other intermediary.
 
 If you still don't get it, see this awesome writeup in [Tail recursion](#rec-tail)
 
 <a id="control-abstraction"></a>
-## Control Abstraction 
+## Control Abstraction
 
 * [Currying](#currying)
 
 *How to apply function values to create new control abstractions*
 
 **Reducing code duplication through first class functions**
-Functions can be thought of as having 2 different parts, *common* and *uncommon*. Common parts are those parts that do not 
-change from one invocation to the next. uncommon are their dual (those that change). e.g. *common* parts - function body, 
-*uncommon* - function args. In Scala, we can easily define functions that take other functions as arguments (*Higher-Order Functions*). 
-These higher-order functions let us create new control abstractions that can reduce code duplication. below we're working 
+Functions can be thought of as having 2 different parts, *common* and *uncommon*. Common parts are those parts that do not
+change from one invocation to the next. uncommon are their dual (those that change). e.g. *common* parts - function body,
+*uncommon* - function args. In Scala, we can easily define functions that take other functions as arguments (*Higher-Order Functions*).
+These higher-order functions let us create new control abstractions that can reduce code duplication. below we're working
 on a file browser that provides an API for users to search for files matching some criterion.
 
 ``` scala
@@ -856,13 +857,13 @@ def containsNeg(nums: List[Int]): = nums.exists(_ <  0)
 
 ```
 
-Here, the `exists` method is a control abstraction that is on `List`. It is a special purpose looping construct provided 
+Here, the `exists` method is a control abstraction that is on `List`. It is a special purpose looping construct provided
 by the Scala library rather than being built into the language like while or for.
 
 <a id="currying"></a>
-### Currying 
+### Currying
 
-We've touched on this previously, but currying helps us make control structures that feel more like native language support. 
+We've touched on this previously, but currying helps us make control structures that feel more like native language support.
 Let's look at some examples.
 
 ``` scala
@@ -877,8 +878,8 @@ def curriedSum(x: Int)(y: Int) = x + y
 
 ```
 
-What you're getting with `curriedSum` is actually *two* traditional function invocations back to back. The first function 
-takes an `Int` value named `x`, and returns a function value for the second function. The second takes an `Int` param `y`.  
+What you're getting with `curriedSum` is actually *two* traditional function invocations back to back. The first function
+takes an `Int` value named `x`, and returns a function value for the second function. The second takes an `Int` param `y`.
 Below you can see something we Java folks might find a little more familiar:
 
 ``` scala
@@ -926,14 +927,14 @@ myCoolThing.withPrintWriter(
 
 ```
 
-The cool thing here is that 'withPrintWriter' ensures that the resource is closed at the end! This technique is called 
-the **loan pattern**, because a control-abstraction function, such as `withPrintWriter`, opens a resource and "loans" 
-it to a function. For instance, `withPrintWriter` in the previous example loans a `PrintWriter` to the function, op. 
-When the function completes, it signals that it no longer needs the "borrowed" resource. The resource is then closed 
-in a finally block, to ensure it is indeed closed, regardless of whether the function completes by returning normally 
+The cool thing here is that 'withPrintWriter' ensures that the resource is closed at the end! This technique is called
+the **loan pattern**, because a control-abstraction function, such as `withPrintWriter`, opens a resource and "loans"
+it to a function. For instance, `withPrintWriter` in the previous example loans a `PrintWriter` to the function, op.
+When the function completes, it signals that it no longer needs the "borrowed" resource. The resource is then closed
+in a finally block, to ensure it is indeed closed, regardless of whether the function completes by returning normally
 or throwing an exception.
 
-To make it look nicer, Scala lets you wrap you args in `{ }` instead of `( )` for passing in **ONE** arg. Sadly our 
+To make it look nicer, Scala lets you wrap you args in `{ }` instead of `( )` for passing in **ONE** arg. Sadly our
 `withPrintWriter` method takes 2. But, does it have to? Let's revisit currying...
 
 ``` scala
@@ -961,10 +962,10 @@ withPrintWriter(file) {
 
 ```
 
-*the first argument list, which contains one `File` argument, is written surrounded by parentheses. The second argument 
+*the first argument list, which contains one `File` argument, is written surrounded by parentheses. The second argument
 list, which contains one function argument, is surrounded by curly braces.*
 
-That's awesome, but what if you want to implement something more like if or while, however, where there is no value to 
+That's awesome, but what if you want to implement something more like if or while, however, where there is no value to
 pass into the code between the curly braces? To help with such situations, Scala provides **by-name** parameters.
 
 ``` scala
@@ -1009,7 +1010,7 @@ byNameAssert(x / 0 == 0)
 ```
 
 <a id="comp-and-inher"></a>
-## Composition and Inheritance 
+## Composition and Inheritance
 *Making a 2D layout library*
 
 What we'll be working towards here is something like:
@@ -1027,7 +1028,7 @@ column1 beside column2
 
 #### Source available [here][ch10Source]
 
-[ch10Source]: https://github.com/jimador/programming-in-scala/tree/master/src/main/scala/programming/in/scala/ch10
+
 
 #### Abstract Classes
 
@@ -1186,7 +1187,7 @@ invoked is determined at run time based on the class of the object, not the type
 * A *final* class may not have a subclass
 
 <a id="traits"></a>
-## Traits 
+## Traits
 
 Defined using the keyword `Trait`
 
@@ -1300,7 +1301,7 @@ val queue = (new BasicIntQueue
     later.
 
 <a id="packages-imports"></a>
-## Packages and Imports 
+## Packages and Imports
 
 Scala allows for 2 types of package declaration:
 
@@ -1507,7 +1508,7 @@ import Predef._    // everything in the Predef object
 ```
 
 <a id="access-modifiers"></a>
-## *Access Modifiers* 
+## *Access Modifiers*
 
 1. [Protection Scoping](#protection-scoping)
 2. [Visibility](#visibility)
@@ -1551,7 +1552,7 @@ package p {
 Everything is public unless you specify otherwise
 
 <a id="protection-scoping"></a>
-### Protection Scoping 
+### Protection Scoping
 
 Access modifiers in Scala can be augmented with qualifiers. A modifier of the form private\[X\] or protected\[X\] means
 that access is private or protected "up to" X, where X designates some enclosing **package**, **class** or **singleton object**.
@@ -1598,7 +1599,7 @@ which is contained in `bobsrockets`. On the other hand, all code outside the pac
 `Navigator`.
 
 <a id="visibility"></a>
-### Visibility and companion objects 
+### Visibility and companion objects
 
 In Java static members and instance members belong to the same class, so access modifiers apply uniformly to them. Scala
 doesn't have static members, but it does have companion objects that contain members that only exist once. e.g.
@@ -1632,3 +1633,544 @@ members of its companion class, just as a class can access all private members o
 **Note**: One exception where the similarity between Scala and Java breaks down concerns protected static members.
 A protected static member of a Java class C can be accessed in all subclasses of C. By contrast, a protected member in
 a companion object makes no sense, as singleton objects don't have any subclasses.
+
+
+<a id="case-classes-and-pattern-matching"></a>
+## Case Classes and Pattern Matching
+*Case classes are Scala's way to allow pattern matching on objects without requiring a large amount of boilerplate. In
+the common case, all you need to do is add a single case keyword to each class that you want to be pattern matchable.*
+
+1. [Case Classes](#case-classes)
+2. [Pattern Matching](#pattern-matching)
+3. [Kinds of Patterns](#pattern-kinds)
+  * [Wildcard](#wildcard-pattern)
+  * [Constant](#const-pattern)
+  * [Variable](#var-pattern)
+  * [Constructor](#constructor-pattern)
+  * [Sequence Pattern](#seq-pattern)
+  * [Tuple](#tuple-pattern)
+  * [Typed](#typed-pattern)
+4. [Pattern Guards](#pattern-guards)
+5. [Pattern Overlaps](#pattern-overlaps)
+6. [Sealed Classes](#sealed-classes)
+7. [The Option Type](#option-type)
+8. [Patterns Everywhere](#patterns-everywhere)
+9. [Patterns Denouement](#patterns-project)
+
+#### A Simple Example
+
+Let's say we're writing a library that manipulates arithmetic expressions. The first step is the definition of the input
+data. For simplicity's sake well stick with expressions consisting of variables, numbers, unary and binary operators.
+
+``` scala
+
+abstract class Expr
+    case class Var(name: String) extends Expr
+    case class Number(num: Double) extends Expr
+    case class UnOp(operator: String, arg: Expr) extends Expr
+    case class BinOp(operator: String,
+        left: Expr, right: Expr) extends Expr
+
+```
+
+Here we have an abstract base class `Expr` with **four** subclasses, which are all _**Case Classes**_.
+
+<a id="case-classes></a>
+### Case Classes
+
+Case classes adds some convenient features to our definition out-of-the-box.
+
+1. It adds a factory method with the name of the class. Now we can say `val v = Var("x")` instead of `new Var("x")`.
+  * This gets nicer when you nest them: `val op = BinOp("+", Number(1,0), v)` => `BinOp = BinOp(+,Number(1.0),Var(x))`
+2. All of the parameter args get an implicit val prefix, so they are maintained as fields.
+  * `v.name` => `String = x` , `op.left` => `Expr = Number(1,0)`
+3. The compiler adds "natural" implementations of `toString`, `hashCode`, and `equals`. Since `==` in Scala always forwards
+to `equals` all of the elements in case classes are compared structurally.
+
+<a id="pattern-matching"></a>
+### Pattern Matching
+
+Let's say we might like to add some simplification logic to our `Expr` library. We can do that using *Pattern Matching*
+
+``` scala
+
+def simplifyTop(expr: Expr): Expr = expr match {
+  case UnOp("-", UnOp("-", e))  => e   // Double negation
+  case BinOp("+", e, Number(0)) => e   // Adding zero
+  case BinOp("*", e, Number(1)) => e   // Multiplying by one
+  case _ => expr
+}
+
+```
+
+*A **pattern match** includes a sequence of alternatives, each starting with the keyword case. Each alternative includes a
+pattern and one or more expressions, which will be evaluated if the pattern matches. An arrow symbol => separates the
+pattern from the expressions.*
+
+A **constant pattern** like "+" or 1 matches values that are equal to the constant with respect to ==. A **variable pattern**
+like e matches every value. The variable then refers to that value in the right hand side of the case clause. In this
+example, note that the first three examples evaluate to e, *a variable that is bound within the associated pattern.*
+The **wildcard pattern (_)** also matches every value, but it does not introduce a variable name to refer to that value.
+
+A **constructor pattern** looks like `UnOp("-", e)`. This pattern matches *all values of type UnOp whose first argument matches
+"-" and whose second argument matches e*. Note that the arguments to the constructor are themselves patterns. This allows
+you to write deep patterns using a concise notation. e.g.
+
+``` scala
+
+// This would look ugly with if/else, switch, or some convoluted design pattern!
+UnOp("-", UnOp("-", e))
+
+```
+
+_**Note:**_ *if **NO** patterns match, a `MatchError` is thrown. *ALWAYS* cover all cases!*
+
+``` scala
+expr match {
+  case BinOp(op, left, right) =>
+    println(expr +" is a binary operation")
+  case _ =>
+}
+
+```
+
+In this example the second *catch all* case returns nothing. _**In Scala Match Expressions always return a value**_. In
+the example above, that value is `Unit`
+
+<a id="pattern-kinds"></a>
+### Kinds of Patterns
+
+<a id="wildcard-pattern"></a>
+#### *Wildcard* `_`
+
+Wildcard patterns match anything, as the name would suggest. They also allow us to ignore parts of an object.
+
+``` scala
+
+// we only care if it's a BinOp, not what is in it
+expr match {
+  case BinOp(_, _, _) => println(expr +"is a binary operation")
+  case _ => println("It's something else")
+}
+
+```
+
+<a id="const-pattern"></a>
+#### *Constant*
+
+Constant patterns match only on themselves. Here you can use a *literal*, a *val*, or a *singleton object*.
+
+``` scala
+
+def describe(x: Any) = x match {
+  case 5 => "five"
+  case true => "truth"
+  case "hello" => "hi!"
+  case Nil => "the empty list" // matching on the singleton object 'Nil'
+  case _ => "something else"
+}
+
+<a id="var-pattern"></a>
+#### *Variable*
+
+Variable patterns match any object (like Wildcard). Scala will bind the variable to whatever the object is. Then, you
+can use that variable to operate on that object. *Named Wildcard*
+
+``` scala
+
+expr match {
+  case 0 => "zero"
+  case somethingElse => "not zero: " + somethingElse // bind the default case to 'somethingElse'
+}
+
+```
+
+_**Variable Binding**_
+
+You can bind variable to any other pattern
+
+``` scala
+
+expr match {
+  case UnOp("abs", e @ UnOp("abs", _)) => e
+  case _ =>
+}
+
+```
+
+Here, using the `@`, we bind `UnOp("abs", _)` to the variable `e`. If the match succeeds, we can refer to the value
+that `e` refers to.
+
+_**Variable or Constant?**_ - Constant patterns can have symbolic names (`Nil` from the *Constant* example)
+
+``` scala
+
+import Math.{E, Pi}
+
+E match {
+  case Pi => "strange math? Pi = "+ Pi
+  case _ => "OK"
+}
+
+// => java.lang.String = OK
+
+```
+
+As we would expect, `E` does not match `Pi`. Scala knows that `Pi` is an imported constant from `java.lang.Math`. Scala
+uses *a simple lexical rule for disambiguation*:
+  - a simple name starting with a lowercase letter is taken to be a pattern variable
+  - all other references are taken to be constants.
+
+*To see the difference*
+
+``` scala
+
+val pi = Math.Pi
+
+E match {
+  case pi => "strange math? Pi = " + pi
+}
+
+// => java.lang.String = strange math? Pi = 2.7182818...
+
+
+// The compiler will not even let you add the default case!
+E match {
+  case pi => "strange math? Pi = "+ pi
+  case _ => "OK"
+}
+
+// => error: unreachable code
+                 case _ => "OK"
+
+// To get around this, you can prefix it with a qualifier this.pi  or obj.pi, if it is the name of a field on an object
+// or
+// you can surround it with back ticks ` `
+E match {
+  case `pi` => "strange math? Pi = " + pi
+  case _ => "OK"
+}
+
+// => java.lang.String = OK
+
+```
+
+Now we have 2 uses for the back tick to get out of unusual circumstances: First to treat something as an identifier rather
+than a keyword ( ``Thread.`yield`()`` ) and second: interpreting a variable as a constant. `` `pi` ``
+
+#### *Constructor*
+
+Constructor patterns will do a deep match on constructors and declared parameters.
+
+``` scala
+
+expr match {
+  case BinOp("+", e, Number(0)) => println("a deep match")
+  case _ =>
+}
+
+```
+
+<a id="seq-pattern"></a>
+#### *Sequence*
+
+Sequence patterns will check against a given sequence.
+
+``` scala
+
+expr match {
+  case List(0, _, _) => println("found it")
+  case _ =>
+}
+
+<a id="tuple-pattern"></a>
+#### *Tuple*
+
+Tuple patterns let you match against Tuples!
+
+``` scala
+
+def tupleDemo(expr: Any) =
+  expr match {
+    case (a, b, c)  =>  println("matched "+ a + b + c)
+    case _ =>
+  }
+
+/**
+  * some examples of how this might be useful...
+  */
+
+generalSize("abc")
+// => Int = 3
+
+generalSize(Map(1 -> 'a', 2 -> 'b'))
+// => Int = 2
+
+generalSize(Math.Pi)
+// => Int = -1
+
+```
+<a id="typed-pattern"></a>
+#### Typed
+
+You can use a typed pattern as a convenient replacement for type tests and type casts.
+
+``` scala
+
+def generalSize(x: Any) = x match {
+  case s: String => s.length
+  case m: Map[_, _] => m.size
+  case _ => -1
+}
+
+```
+
+The `generalSize` method returns the size or length of objects of various types. Its argument is of type `Any`, so it could
+be any value. If the argument is a `String`, the method returns the string's length. The pattern `s: String` is a *typed
+pattern*; it matches every **non-null** instance of `String`. The pattern variable `s` then refers to that string.
+
+*Note: even though `s` and `x` refer to the same value, the type of `x` is `Any`, but the type of `s` is `String`. So you can
+write `s.length` in the alternative expression that corresponds to the pattern, but you could not write `x.length`,
+because the type `Any` does not have a `length` member.
+
+<a id="pattern-guards"></a>
+### Pattern Guards
+
+Suppose you wanted to transform `BinOp("+", Var("x"), Var("x"))` into `BinOp("*", Var("x"), Number(2))`
+
+``` scala
+
+//you might try...
+def simplifyAdd(e: Expr) = e match {
+  case BinOp("+", x, x) => BinOp("*", x, Number(2))
+  case _ => e
+}
+
+// => error: x is already defined as value x
+//    case BinOp("+", x, x) => BinOp("*", x, Number(2))
+// Oops, this doesn't work, however with a Pattern Guard...
+
+def simplifyAdd(e: Expr) = e match {
+  case BinOp("+", x, y) if x == y => //the 'if' here is known as a Pattern Guard
+    BinOp("*", x, Number(2))
+  case _ => e
+}
+
+// => simplifyAdd: (Expr)Expr
+
+// Some more examples
+
+// match only positive integers
+case n: Int if 0 < n => // do something ...
+
+  // match only strings starting with the letter `a'
+case s: String if s(0) == 'a' => // do something ...
+```
+
+A *pattern guard* comes after a pattern and starts with an if. The guard can be an arbitrary boolean expression, which
+typically refers to variables in the pattern. If a pattern guard is present, the match succeeds only if the guard
+evaluates to true.
+
+<a id="pattern-overlaps"></a>
+### Pattern Overlaps
+
+Patterns are tried in the order they are written. Here's an example where the order matters...
+
+``` scala
+
+//  apply simplification rules everywhere in an expression, not just at the top, as simplifyTop did.
+def simplifyAll(expr: Expr): Expr = expr match {
+  case UnOp("-", UnOp("-", e)) => simplifyAll(e)   // '-' is its own inverse
+  case BinOp("+", e, Number(0)) => simplifyAll(e)   // '0' is a neutral element for '+'
+  case BinOp("*", e, Number(1)) => simplifyAll(e)   // '1' is a neutral element for '*'
+  case UnOp(op, e) =>  UnOp(op, simplifyAll(e)) //
+  case BinOp(op, l, r) => BinOp(op, simplifyAll(l), simplifyAll(r))
+  case _ => expr
+}
+
+```
+
+The fourth case has the pattern `UnOp(op, e)`; i.e., it matches **every unary operation**. The *operator* and *operand* of the unary
+operation **can be arbitrary**. They are bound to the pattern variables `op` and `e`, respectively. The alternative in this case
+applies `simplifyAll` *recursively to the operand* `e` and then *rebuilds the same unary operation with the (possibly) simplified
+operand*.
+
+The fifth case for `BinOp` is analogous: it is a *catch-all* case for arbitrary binary operations, which *recursively
+applies the simplification method to its two operands*.
+
+<a id="sealed-classes"></a>
+### Sealed Classes
+
+When you write a *pattern match* how do you know that you've covered all of the cases? Does add a *default* case help? What if
+there is no sensible *default* behavior? How can you sleep at night with all of this unsurety in you code? Why don't you
+just let the compiler take care of it? Wait... WAT?
+
+You can enlist the help of the Scala compiler in detecting missing combinations of patterns in a match expression! To do
+this, the compiler needs to be able to tell what the possible cases are. In general, this is _**UNPOSSIBLE!**_ In Scala,
+you can define new case classes at any time and in arbitrary compilation units. nothing would prevent you from adding a
+fifth case class to the Expr class hierarchy in a different compilation unit from the one where the other four cases are
+defined. *Who will stop this madness?* Why, **you** can!
+
+You can make the *superclass* of you case classes `sealed`. A `sealed` class cannot have any new subclasses added _**except**_
+ones in the _**same file**_. You want **MORE?**, well the Scala compiler has your **MORE**.  If you match against case
+classes that inherit from a sealed class, the compiler will flag missing combinations of patterns with a warning message.
+Stick that in your proverbial pipe and smoke it.
+
+If you write a hierarchy of classes intended to be pattern matched, you **should** consider *sealing* them. Simply put the
+`sealed` keyword in front of the class at the top of the hierarchy. Programmers using your class hierarchy will then feel
+confident in pattern matching against it. The `sealed` keyword, therefore, is often a license to pattern match.
+
+``` scala
+
+// Let's redefine Expr as sealed. Yes, it's that easy.
+sealed abstract class Expr
+  case class Var(name: String) extends Expr
+  case class Number(num: Double) extends Expr
+  case class UnOp(operator: String, arg: Expr) extends Expr
+  case class BinOp(operator: String,
+    left: Expr, right: Expr) extends Expr
+
+// Now let's define a pattern match and leave something out
+def describe(e: Expr): String = e match {
+  case Number(_) => "a number"
+  case Var(_)    => "a variable"
+}
+
+// we now get a compiler warning that says...
+// warning: match is not exhaustive!
+// missing combination           UnOp
+// missing combination          BinOp
+
+// Isn't that nifty? But sometime you know more than the compiler does.
+// You might not have defined every case, because you didn't need to.
+// In that case, add...
+
+// Catch-all, that'll shut the compiler up
+def describe(e: Expr): String = e match {
+  case Number(_) => "a number"
+  case Var(_) => "a variable"
+  case _ => throw new RuntimeException // Should not happen
+}
+
+// @unchecked will too
+def describe(e: Expr): String = (e: @unchecked) match {
+  case Number(_) => "a number"
+  case Var(_)    => "a variable"
+}
+
+```
+
+<a id="option-type"></a>
+### The Option Type
+
+Scala has an `Option` type that can be used, and even matched against! `Option` has **two** values `Some` and `None`
+
+``` scala
+
+def show(x: Option[String]) = x match {
+  case Some(s) => s
+  case None => "?"
+}
+
+```
+
+<a id="patterns-everywhere"></a>
+### Patterns Everywhere
+
+Any time you define a val or a var, you can use a pattern instead of a simple identifier.
+
+``` scala
+
+val myTuple = (123, "abc")
+// => myTuple: (Int, java.lang.String) = (123,abc)
+
+// define multiple variables with ONE assignment statement
+val (number, string) = myTuple
+// =>
+//   number: Int = 123
+//   string: java.lang.String = abc
+
+// This is nice for deconstructing classes when you know the precise case class you are working with.
+val exp = new BinOp("*", Number(5), Number(1))
+// => exp: BinOp = BinOp(*,Number(5.0),Number(1.0))
+
+val BinOp(op, left, right) = exp
+// =>
+//   op: String = *
+//   left: Expr = Number(5.0)
+//   right: Expr = Number(1.0)
+
+```
+
+#### *Case Sequences as Partial Functions*
+
+A sequence of cases (i.e., alternatives) in curly braces can *be used anywhere a function literal can be used*. A case
+sequence *is a function literal*, only *more general*. **Instead** of having a *single entry point* and list of parameters, a case
+sequence has *multiple entry points*, *each with their own list of parameters*. Each case *is an entry point to the function*,
+and *the parameters are specified with the pattern*. The **body** of each entry point **is the right-hand side of the case**.
+
+``` scala
+
+// A simple example
+val withDefault: Option[Int] => Int = {
+  case Some(x) => x
+  case None => 0
+}
+
+withDefault(Some(10))
+// => Int = 10
+
+withDefault(None)
+// => Int = 0
+
+// a seqence case give you a partial function. If you apply the function to a value it doesn't support, it will throw
+// a runtime exception!
+// Here is a non-exhaustive example
+val second: List[Int] => Int = {
+  case x :: y :: _ => y
+}
+
+// Partial functions have a method called isDefinedAt, which tests whether the function is
+// defined at a particular value.
+second.isDefinedAt(List(5,6,7))
+// => Boolean = true
+
+second.isDefinedAt(List()) // second only operates on a List[Int] with >= 2 elements!
+// => Boolean = false
+
+```
+
+#### *Patterns in for expressions*
+
+``` scala
+
+// A map of country to capital
+val capitals = Map("France" -> "Paris", "Japan" -> "Tokyo")
+
+// Naming the variables in your for expression
+for ((country, city) <- capitals)
+  println("The capital of "+ country +" is "+ city)
+
+<a id="patterns-project"></a>
+### Patterns Denouement
+
+Code available [here][ch15Source]
+
+The proposed task is to write an expression formatter class that displays an arithmetic expression in a two-dimensional
+layout. Divisions such as "x / x + 1" should be printed vertically, by placing the numerator on top of the denominator,
+like this:
+                                                        x
+                                                     ------
+                                                      x + 1
+
+As another example, here's the expression ((a / (b * c) + 1 / n) / 3) in two dimensional layout:
+
+                                                     a     1
+                                                    ----- + -
+                                                    b * c   n
+                                                    ---------
+                                                        3
+
+<!--Sources-->
+[ch15Source]: https://github.com/jimador/programming-in-scala/tree/master/src/main/scala/programming/in/scala/ch15/expr/
+[ch10Source]: https://github.com/jimador/programming-in-scala/tree/master/src/main/scala/programming/in/scala/ch10/layout/
