@@ -1,5 +1,5 @@
 # Programming in Scala notes and example code
 
-* [Notes][notes]
+* [Notes][notes] - Notes on the various topics covered in _Programming in Scala_
 
-[notes]: https://github.com/jimador/programming-in-scala/blob/master/NOTES.md
+[notes]: /NOTES.md
