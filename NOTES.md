@@ -19,6 +19,7 @@
 14. [Case Classes and Pattern Matching](#case-classes-and-pattern-matching)
 15. [Working with Lists](#working-with-lists)
 16. [Collections](#collections)
+17. [Stateful Objects](#stateful-objects)
 
 <a id="basic-collections"></a>
 ## Basic Collections
@@ -2358,6 +2359,101 @@ reflection of that). The operator has `:\` as an analog that produces right-lean
   - Synchronized versions with mixins `new HashMap[String, String] with SynchronizedMap[String, String]`
 3. Initializing collections
   - to initialize a collection with the contents of another collection, use `++`: `val treeSet = TreeSet[String]() ++ someList`
+
+<a id="stateful-objects"></a>
+## Stateful Objects
+
+Scala has mutable state too! Often this makes sense if you want to model an object that changes over time. e.g.
+
+``` scala
+
+class BankAccount {
+
+  private var bal: Int = 0
+
+  def balance: Int = bal
+
+  def deposit(amount: Int) {
+    require(amount > 0)
+    bal += amount
+  }
+
+  def withdraw(amount: Int): Boolean = 
+    if (amount > bal) false
+    else {
+      bal -= amount
+      true
+    }
+} 
+
+```
+
+Clearly bank accounts have mutable state, because the same operation can return different results at different times.
+
+You can perform two fundamental operations on a reassignable variable: get its value or set it to a new value. In Scala, 
+every var that is a non-private member of some object implicitly defines a getter and a setter method with it. 
+These getters and setters are named differently from the Java convention, however. The getter of a var `x` is just named 
+`x`, while its setter is named `x_=`.
+
+generates a getter, "hour", and setter, "hour_=", in addition to a reassignable field. The field is always marked 
+private[this], which means it can be accessed only from the object that contains it. The getter and setter, on the other 
+hand, get the same visibility as the original var. If the var definition is public, so are its getter and setter, if it 
+is protected they are also protected, and so on. e.g.
+
+``` scala
+
+class Time {
+  var hour = 12
+  var minute = 0
+}
+    
+```
+
+gets turned into...
+
+``` scala
+
+class Time {
+
+  private[this] var h = 12
+  private[this] var m = 0
+
+  def hour: Int = h
+  def hour_=(x: Int) { h = x }
+
+  def minute: Int = m
+  def minute_=(x: Int) { m = x }
+} 
+
+```
+
+you can define these explicitly to enforce constraints...
+
+``` scala
+
+class Time {
+
+  private[this] var h = 12
+  private[this] var m = 12
+
+  def hour: Int = h
+  def hour_= (x: Int) {
+    require(0 <= x && x < 24)
+    h = x
+  }
+
+  def minute = m
+  def minute_= (x: Int) {
+    require(0 <= x && x < 60)
+    m = x
+  }
+} 
+
+```
+
+
+
+
 
 <!--Sources-->
 [ch10Source]: src/main/scala/programming/in/scala/ch10/layout/
