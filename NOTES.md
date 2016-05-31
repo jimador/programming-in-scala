@@ -2298,8 +2298,8 @@ val words = List("the", "quick", "brown", "fox")
 
 #### _**Fold Left**_ `/:`
 
-A fold left operation "(z /: xs) (op)" involves three objects: a start value z, a list xs, and a binary operation op.
-The result of the fold is op applied between successive elements of the list prefixed by z. For instance:
+A fold left operation `(z /: xs) (op)` involves three objects: a start value `z`, a list `xs`, and a binary operation `op`.
+The result of the fold is `op` applied between successive elements of the list prefixed by `z`. For instance:
 
 ``` scala
 
@@ -2324,8 +2324,8 @@ The result of the fold is op applied between successive elements of the list pre
                                       z    a
 
 #### _**Fold Right**_ `:\`
-The /: operator produces left-leaning operation trees (its syntax with the slash rising forward is intended to be a
-reflection of that). The operator has :\ as an analog that produces right-leaning trees. For instance:
+The `/:` operator produces left-leaning operation trees (its syntax with the slash rising forward is intended to be a
+reflection of that). The operator has `:\` as an analog that produces right-leaning trees. For instance:
 
 ``` scala
 
