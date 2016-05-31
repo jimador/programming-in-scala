@@ -18,10 +18,11 @@
 13. [Access Modifiers](#access-modifiers)
 14. [Case Classes and Pattern Matching](#case-classes-and-pattern-matching)
 15. [Working with Lists](#working-with-lists)
+16. [Collections](#collections)
 
 <a id="basic-collections"></a>
 ## Basic Collections
-  * [Arrays](#arrays") - Mutable sequence of objects that are all the same type
+  * [Arrays](#arrays) - Mutable sequence of objects that are all the same type
     * `val array = new Array[Int](0,1,2)`
   * [Lists](#lists) - Immutable sequence of objects that are all the same type
     * `val list = List(1,2,3)`
@@ -2314,7 +2315,7 @@ The result of the fold is op applied between successive elements of the list pre
 
 ```
 
-                                           op
+                                            op
                                            /  \
                                           op   c
                                          /  \
@@ -2332,7 +2333,7 @@ reflection of that). The operator has :\ as an analog that produces right-leanin
 
 ```
 
-                                          op
+                                           op
                                           /  \
                                          a    op
                                              /  \
@@ -2340,6 +2341,24 @@ reflection of that). The operator has :\ as an analog that produces right-leanin
                                                 /  \
                                                c    z
 
+<a id="collections"></a>
+## Collections
+
+1. Sequences
+  - Lists - see [Lists](#lists)
+  - Arrays - see [Arrays](#arrays)
+  - List Buffers - Mutable list. Provides constant time pre and append.  
+  - Array Buffers - Like an array, but you can remove from the beginning and the end. Constant time average add/remove ops.
+  - Queues - FIFO. Mutable and Immutable versions
+  - Stacks - LIFO. Mutable and Immutable versions.
+  - Strings (RichString) - `Seq[Char]`
+2. Sets and Maps
+  - see [Sets](#sets) and [Maps](#maps)
+  - Mutable and Immutable versions
+  - Synchronized versions with mixins `new HashMap[String, String] with SynchronizedMap[String, String]`
+3. Initializing collections
+  - to initialize a collection with the contents of another collection, use `++`: `val treeSet = TreeSet[String]() ++ someList`
+
 <!--Sources-->
-[ch15Source]: src/main/scala/programming/in/scala/ch15/expr/
 [ch10Source]: src/main/scala/programming/in/scala/ch10/layout/
+[ch15Source]: src/main/scala/programming/in/scala/ch15/expr/
